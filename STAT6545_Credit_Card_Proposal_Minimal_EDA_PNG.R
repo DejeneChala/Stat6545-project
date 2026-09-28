@@ -1,7 +1,6 @@
 ############################################################
 # STAT 6545 Project Proposal
 # Credit Card Customer Data
-# Minimal Exploratory Analysis Only
 #   1. Correlation matrix
 #   2. Histograms of selected informative variables
 #
