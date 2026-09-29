@@ -17,7 +17,7 @@ library(corrplot)
 # A1
 setwd("C:/Users/user/OneDrive - University of Missouri/Fall2026/MVA/Project")
 # A2
-
+setwd((r"(C:\Users\tjgfx9\OneDrive - University of Missouri\Masters\Stat 6545\Project)"))
 # A3
 
 # A4
@@ -106,6 +106,3 @@ for (v in hist_vars) {  x <- hist_data[[v]]
 mtext( "Histograms of Selected Credit Card Customer Variables", outer = TRUE,side = 3,line = 1,cex = 1.25,font = 2)
 
 dev.off()
-#Some more tests
-TylerMatrix=mattrix(data=c(1,2,3,4,5,6,7,8,10),ncol=3)
-det(TylerMatrix)
