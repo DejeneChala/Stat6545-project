@@ -17,8 +17,11 @@ library(corrplot)
 # A1
 setwd("C:/Users/user/OneDrive - University of Missouri/Fall2026/MVA/Project")
 # A2
+
 # A3
+
 # A4
+
 ############################################################
 # Credit Card Customer Dataset
 # Enhanced Scatterplot Matrix and Histograms
