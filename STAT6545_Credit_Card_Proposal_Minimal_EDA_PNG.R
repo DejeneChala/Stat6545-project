@@ -105,4 +105,3 @@ for (v in hist_vars) {  x <- hist_data[[v]]
   hist( x,breaks = "FD", main = gsub("_", " ", v),xlab = gsub("_", " ", v), ylab = "Frequency", border = "white")}
 mtext( "Histograms of Selected Credit Card Customer Variables", outer = TRUE,side = 3,line = 1,cex = 1.25,font = 2)
 
-dev.off()
