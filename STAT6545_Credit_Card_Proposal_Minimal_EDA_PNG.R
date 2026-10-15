@@ -117,7 +117,7 @@ mtext( "Histograms of Selected Credit Card Customer Variables", outer = TRUE,sid
 
 ############################################################
 # 7. MULTIVARIATE NORMALITY AND OUTLIER DETECTION
-# STAT 6545 - Chapter 4
+# Source R codes for STAT 6545 - Chapter 4
 ############################################################
 
 # Close the histogram PNG opened above
