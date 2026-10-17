@@ -17,7 +17,7 @@ library(corrplot)
 # A1
 setwd("C:/Users/user/OneDrive - University of Missouri/Fall2026/MVA/Project")
 # A2
-setwd((r"(C:\Users\tjgfx9\OneDrive - University of Missouri\Masters\Stat 6545\Project)"))
+setwd(r"(C:\Users\tjgfx9\OneDrive - University of Missouri\Masters\Stat6545-project)")
 # A3
 
 # A4
@@ -356,3 +356,34 @@ cat("Number of variables:", p, "\n")
 cat("Potential outliers:", length(outliers), "\n")
 cat("Outlier percentage:",
     round(100 * length(outliers) / n, 2), "%\n")
+
+
+
+############################################################
+#MANOVA
+############################################################
+
+Split.Cov=function(df,column){
+  #Separate the Data Frame into separate groups
+  #Calculate covariance matrices for separate groups
+  groups=unique(df[[column]])
+  g=length(groups)
+  group_data=vector("list",g)
+  group_cov=vector("list",g)
+  for (i in 1:g){
+    group_data[[i]]=df %>%
+      filter(.data[[column]]==groups[i]) %>%
+      select(where(is.numeric)) %>%
+      as.matrix
+    group_cov[[i]]=cov(group_data[[i]])
+  }
+  names(group_data)=as.character(groups)
+  names(group_cov)=as.character(groups)
+  return(list(X=group_data,Cov=group_cov))
+}
+
+
+
+
+
+
