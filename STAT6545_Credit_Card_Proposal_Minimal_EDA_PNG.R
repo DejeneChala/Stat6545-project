@@ -417,10 +417,35 @@ BoxM.Test=function(Cov,Spool,Ns){
   pval=pchisq(C,df,lower.tail = F)
   return(pval)
 }
-CardTypeTest=Split.Cov(credit_data,'Card_Type')
-Cov=CardTypeTest$Cov
-Spool=CardTypeTest$Spool
-Ns=CardTypeTest$Ns
+card_kept=
+subset(credit_data,select=-c(Customer_ID,Age,Avg_Transaction_Value,
+                    Payment_Ratio,Credit_Utilization,EMI_Count,
+                    International_Transactions,Reward_Points_Earned,
+                    Reward_Points_Redeemed,Mobile_App_Login,
+                    Monthly_Spending,Monthly_Transactions,Cash_Advance_Amount,
+                    Online_Shopping_Spending,Grocery_Spending)
+)
+logcard_kept=log(card_kept[-c(1,3,4)])
+logcard_kept=cbind(log(card_kept[-c(1,3,4)]),Card_Type=credit_data$Card_Type)
+Cov=credit_test$Cov
+Spool=credit_test$Spool
+Ns=credit_test$Ns
 pval=BoxM.Test(Cov,Spool,Ns)
 pval
-  
+Cov
+PCA=princomp(log(card_kept[,-c(1,3,4)]),cor=T)
+
+p=ggplot(credit_data,aes(x=log(Annual_Income),y=log(Credit_Limit),color=Card_Type))+
+  geom_point()
+p
+cov(log(card_kept[,-c(1,3,4)]))
+
+logcard_kept
+class(logcard_kept)
+
+
+sum(is.infinite(as.matrix(logcard_kept[sapply(logcard_kept,is.numeric)])))
+sum(is.na(logcard_kept))
+
+
+pval=1-pf(0.05/2,2,2)
