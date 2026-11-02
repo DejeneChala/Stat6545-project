@@ -392,6 +392,7 @@ Split.Cov=function(df,column){
   names(group_cov)=as.character(groups)
   return(list(X=group_data,Cov=group_cov,Spool=Single_Spool,Ns=ns))
 }
+
 BoxM.Test=function(Cov,Spool,Ns){
   #Performs Box's M Test to Test H0 = Sig1=Sig2=....
   #Ha = Otherwise.
@@ -417,35 +418,40 @@ BoxM.Test=function(Cov,Spool,Ns){
   pval=pchisq(C,df,lower.tail = F)
   return(pval)
 }
+#Keep only these variables for MANOVA.
 card_kept=
-subset(credit_data,select=-c(Customer_ID,Age,Avg_Transaction_Value,
-                    Payment_Ratio,Credit_Utilization,EMI_Count,
-                    International_Transactions,Reward_Points_Earned,
-                    Reward_Points_Redeemed,Mobile_App_Login,
-                    Monthly_Spending,Monthly_Transactions,Cash_Advance_Amount,
-                    Online_Shopping_Spending,Grocery_Spending)
+  subset(credit_data,select=c(Age,Gender,Occupation,Card_Type,Annual_Income,
+                    Credit_Limit,Monthly_Spending,Outstanding_Balance,
+                    Statement_Balance,Payment_Amount,Credit_Score)
 )
-logcard_kept=log(card_kept[-c(1,3,4)])
-logcard_kept=cbind(log(card_kept[-c(1,3,4)]),Card_Type=credit_data$Card_Type)
-Cov=credit_test$Cov
-Spool=credit_test$Spool
-Ns=credit_test$Ns
-pval=BoxM.Test(Cov,Spool,Ns)
-pval
-Cov
-PCA=princomp(log(card_kept[,-c(1,3,4)]),cor=T)
 
-p=ggplot(credit_data,aes(x=log(Annual_Income),y=log(Credit_Limit),color=Card_Type))+
-  geom_point()
+
+#Set Up for MANOVA
+CatVars=c('Gender','Occupation','Card_Type')
+NumVars=c('Age','Annual_Income','Credit_Limit','Monthly_Spending',
+          'Outstanding_Balance','Statement_Balance','Payment_Amount',
+          'Credit_Score'
+)
+set.seed(42)
+Chosen=sample(1:nrow(card_kept),100)
+card_kept_Chosen_Nums=card_kept[Chosen,NumVars]
+card_kept_Chosen_Nums=log1p(card_kept_Chosen_Nums)
+sub_card_kept=append(card_kept_Chosen_Nums,card_kept[Chosen,CatVars])
+sub_card_kept=as.data.frame(card_kept)
+log_sub_card_kept_Nums=log1p(sub_card_kept[NumVars])
+log_sub_card_kept=append(log_sub_card_kept_Nums,sub_card_kept[CatVars])
+log_sub_card_kept=as.data.frame(log_sub_card_kept)
+class(log_sub_card_kept)
+#Do the Testing.
+for (i in 1:length(CatVars)){
+  cat("Testing for",CatVars[i],"\n")
+  credit_test=Split.Cov(log_sub_card_kept,CatVars[i])
+  Cov=credit_test$Cov
+  Spool=credit_test$Spool
+  Ns=credit_test$Ns
+  pval=BoxM.Test(Cov,Spool,Ns)
+  print(paste('The p-value for', CatVars[i], 'is:', pval))
+  print('**************************************************')
+}
+p=ggplot(card_kept,aes(x=Annual_Income,y=Credit_Limit,color=Gender))+geom_point()+theme_bw()
 p
-cov(log(card_kept[,-c(1,3,4)]))
-
-logcard_kept
-class(logcard_kept)
-
-
-sum(is.infinite(as.matrix(logcard_kept[sapply(logcard_kept,is.numeric)])))
-sum(is.na(logcard_kept))
-
-
-pval=1-pf(0.05/2,2,2)
