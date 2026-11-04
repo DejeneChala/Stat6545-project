@@ -92,3 +92,4 @@ for (i in 1:length(CatVars)){
   print(paste('The p-value for', CatVars[i], 'is:', pval))
   print('**************************************************')
 }
+
