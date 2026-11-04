@@ -224,3 +224,8 @@ for (i in 1:(length(CatVars)-1)){
     cat('\n\n\n\n\n')
   }
 }
+
+
+#In Post, add in Bonferroni CI's and CI's for two way MANOVA.
+
+
