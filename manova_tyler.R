@@ -38,6 +38,8 @@ BoxM.Test=function(Cov,Spool,Ns){
   #Performs Box's M Test to Test H0 = Sig1=Sig2=....
   #Ha = Otherwise.
   #Returns a p-value. 
+  #Could have used the biotools package, but I wanted to do it from scratch so that
+  #I could also get the covariance matrices and Spool for later use in Bonferroni CI's.
   p=dim(Cov[[1]])[1]
   g=length(Cov)
   lambda=1
