@@ -227,5 +227,3 @@ for (i in 1:(length(CatVars)-1)){
 
 
 #In Post, add in Bonferroni CI's and CI's for two way MANOVA.
-
-
