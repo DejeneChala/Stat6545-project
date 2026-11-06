@@ -1,1 +1,427 @@
+# ************************************************************************
+#
+#   R code for  PCA and FA
+# The following R code was written by Dejene- Does the PCA and FA to the data
+#
+#
+#*************************************************************************
+# we set seed for reproducibilty and also set the folder the project result as follows
+
+set.seed(123)
+DATA_FILE <- "synthetic_credit_card_customer_behavior_dataset.csv"
+OUT <- "C:/Users/ddcdq7/OneDrive - University of Missouri/Fall2026/MVA/Project/Proj-results-dejene"
+dir.create(OUT, showWarnings=FALSE, recursive=TRUE)
+PLOTS <- file.path(OUT, "new-plots")
+dir.create(PLOTS, showWarnings=FALSE, recursive=TRUE)
+NUM <- file.path(OUT, "Dejene-Results")
+dir.create(NUM, showWarnings=FALSE, recursive=TRUE)
+stopifnot(file.exists(DATA_FILE), requireNamespace("psych", quietly=TRUE))
+customer_data <- read.csv(DATA_FILE, check.names=TRUE)
+if ("Average_Transaction_Value" %in% names(customer_data) &&
+    !"Avg_Transaction_Value" %in% names(customer_data))
+  customer_data$Avg_Transaction_Value <- customer_data$Average_Transaction_Value
+
+analysis_variables <- c("Annual_Income","Credit_Limit","Monthly_Spending",
+  "Avg_Transaction_Value","Online_Shopping_Spending","Grocery_Spending",
+  "Fuel_Spending","Dining_Spending","Travel_Spending",
+  "Entertainment_Spending","Utility_Bill_Spending",
+  "Outstanding_Balance","Payment_Amount","Payment_Ratio",
+  "Credit_Utilization","Cash_Advance_Amount","Credit_Score")
+monetary <- c("Annual_Income","Credit_Limit","Monthly_Spending",
+  "Avg_Transaction_Value","Online_Shopping_Spending","Grocery_Spending",
+  "Fuel_Spending","Dining_Spending","Travel_Spending",
+  "Entertainment_Spending","Utility_Bill_Spending",
+  "Outstanding_Balance","Payment_Amount","Cash_Advance_Amount")
+
+original_data <- customer_data[, analysis_variables, drop = FALSE]
+row_id <- seq_len(nrow(original_data))
+
+# Based on the outcome of the data diagnostics we used the box cox transformation
+# Using the following lines of code
+# Choose "boxcox" to estimate a power for each column, or "log" for natural logs.
+transformation <- "boxcox"
+stopifnot(transformation %in% c("boxcox", "log"))
+transformed_data <- original_data
+transformations <- data.frame(Variable = analysis_variables, Method = "Original", Lambda = NA_real_,
+                              stringsAsFactors = FALSE)
+
+
+
+box_cox <- function(log_values, lambda) {  if (lambda == 0) return(log_values)
+  expm1(lambda * log_values) / lambda}
+
+for (variable in monetary) {
+  values <- original_data[[variable]]
+  index <- match(variable, analysis_variables)
+  if (any(values == 0) || min(values) == max(values)) {
+    transformations$Method[index] <- if (any(values == 0)) "Original (contains zero)" else "Original (constant)"
+    next
+  }
+
+  log_values <- log(values)
+  lambda <- 0
+  if (transformation == "boxcox") {
+    # Centering the logs incorporates the Jacobian in the profile likelihood.
+    centered_logs <- log_values - mean(log_values)
+    loss <- function(power) log(var(box_cox(centered_logs, power)))
+    best_power <- optimize(loss, interval = c(-2, 2))$minimum
+    powers <- c(-2, 0, best_power, 2)
+    lambda <- powers[which.min(vapply(powers, loss, numeric(1)))]
+  }
+  transformed_data[[variable]] <- box_cox(log_values, lambda)
+  transformations$Method[index] <- if (lambda == 0) "Natural log" else "Box-Cox"
+  transformations$Lambda[index] <- lambda
+}
+
+# Drop constant and linearly dependent columns.
+varying_columns <- vapply(transformed_data,function(z) is.finite(sd(z)) && sd(z)>0,logical(1))
+scaled_columns <- scale(transformed_data[,varying_columns,drop=FALSE])
+q <- qr(scaled_columns,tol=1e-8)
+retained_variables <- colnames(scaled_columns)[sort(q$pivot[seq_len(q$rank)])]
+transformations$Retained <- analysis_variables %in% retained_variables
+write.csv(transformations, file.path(NUM, "Variable_Transformations.csv"), row.names = FALSE)
+if(length(retained_variables)<3) stop("Too few independent columns.")
+original_data <- original_data[,retained_variables,drop=FALSE]
+transformed_data <- transformed_data[,retained_variables,drop=FALSE]
+Z <- scale(transformed_data)
+n <- nrow(Z); p <- ncol(Z)
+write.csv(data.frame(Original_Row=row_id),file.path(NUM,"Included_Rows.csv"),row.names=FALSE)
+write.csv(data.frame(Variable=retained_variables,Original_Mean=colMeans(original_data),
+  Transformed_Mean=colMeans(transformed_data),Transformed_SD=apply(transformed_data,2,sd)),
+  file.path(NUM,"Scaling_Parameters.csv"),row.names=FALSE)
+
+plot_both <- function(name,fun,w=9,h=7) {
+  pdf(file.path(PLOTS,paste0(name,".pdf")),width=w,height=h,useDingbats=FALSE)
+  tryCatch(fun(),finally=dev.off())
+  png(file.path(PLOTS,paste0(name,".png")),width=w,height=h,units="in",res=300)
+  tryCatch(fun(),finally=dev.off())
+}
+
+# Minimal numerical results were obtained based on the concepts discussed in the lecture notes
+# Graphs talks a lot; The following graphing functions were used to make our results more attractive
+# ===
+heat <- function(M,main,lim=1) {
+  M <- as.matrix(M); nr <- nrow(M); nc <- ncol(M)
+  pal <- colorRampPalette(c("#2166AC","white","#B2182B"))(101)
+  par(mar=c(9,16,3,2))
+  plot(0,type="n",xlim=c(.5,nc+.5),ylim=c(.5,nr+.5),
+       axes=FALSE,xlab="",ylab="",main=main)
+  for(i in seq_len(nr)) for(j in seq_len(nc)) {
+    v <- M[i,j]; yy <- nr-i+1
+    ix <- if(is.finite(v)) 1+round(100*(pmin(lim,pmax(-lim,v))+lim)/(2*lim)) else NA
+    rect(j-.5,yy-.5,j+.5,yy+.5,col=if(is.na(ix)) "grey90" else pal[ix],border="white")
+  }
+  axis(1,seq_len(nc),gsub("_"," ",colnames(M)),las=2,cex.axis=.75)
+  axis(2,seq_len(nr),rev(gsub("_"," ",rownames(M))),las=1,cex.axis=.75)
+}
+write_table <- function(d,name) write.csv(d,file.path(NUM,paste0(name,".csv")),row.names=FALSE)
+# Use standardized variables for the main PCA.
+
+
+# Minimal PCA procedure
+
+pca_corr <- prcomp(transformed_data,center=TRUE,scale.=TRUE)
+pca_cov <- prcomp(transformed_data,center=TRUE,scale.=FALSE)
+pca_original_cov <- prcomp(original_data,center=TRUE,scale.=FALSE) # Compare with the original monetary values.
+summary_pca <- function(f) {
+  eig <- f$sdev^2
+  data.frame(Component=paste0("PC",seq_along(eig)),Eigenvalue=eig,
+   Variance_Percent=100*eig/sum(eig),
+   Cumulative_Percent=100*cumsum(eig)/sum(eig))
+}
+vc <- summary_pca(pca_corr)
+write_table(vc,"Variance_Explained")
+write_table(summary_pca(pca_cov),"Covariance_PCA_Transformed")
+write_table(summary_pca(pca_original_cov),"Covariance_PCA_Original")
+k <- which(vc$Cumulative_Percent>=80)[1]
+V <- pca_corr$rotation
+cor_pc <- sweep(V,2,pca_corr$sdev,"*")
+colnames(cor_pc) <- colnames(V)
+write.csv(V,file.path(NUM,"PCA_Loadings.csv"))
+write.csv(cor_pc,file.path(NUM,"Variable_PC_Correlations.csv"))
+write.csv(100*V^2,file.path(NUM,"Variable_Contributions_Percent.csv"))
+write_table(data.frame(Original_Row=row_id,pca_corr$x),"PCA_Scores")
+write_table(data.frame(N=n,Variables=p,Retained_80pct=k,
+  Retained_Kaiser=sum(vc$Eigenvalue>1),
+  Cumulative_Variance_Percent=vc$Cumulative_Percent[k]),"PCA_Retention")
+saveRDS(pca_corr,file.path(NUM,"PCA_Model.rds"))
+
+v_cov <- summary_pca(pca_cov)
+v_raw <- summary_pca(pca_original_cov)
+k_cov <- which(v_cov$Cumulative_Percent >= 80)[1]
+V_cov <- pca_cov$rotation
+cor_pc_cov <- cor(transformed_data, pca_cov$x)
+
+paired <- function(name, title, left, right, w=15, h=7.5) {
+  plot_both(name, function() {
+    old <- par(no.readonly=TRUE)
+    on.exit(par(old))
+    par(mfrow=c(1,2), oma=c(0,0,3.4,0))
+    left()
+    right()
+    mtext(title, side=3, outer=TRUE, line=1.0, cex=1.35, font=2)
+  }, w=w, h=h)
+}
+# Graphing:
+scree_panel <- function(v, ttl, line1=FALSE) {
+  par(mar=c(5,5,3,1))
+  plot(seq_len(nrow(v)),v$Eigenvalue,type="b",pch=19,cex=.65,
+       xlab="Principal component",ylab="Eigenvalue",main=ttl)
+  if(line1) abline(h=1,lty=2,col="red")}
+cumulative_panel <- function(v, ttl, kk) {
+  par(mar=c(5,5,3,1))
+  plot(seq_len(nrow(v)),v$Cumulative_Percent,type="b",pch=19,cex=.65,
+       ylim=c(0,100),xlab="Number of components",
+       ylab="Cumulative variance (%)",main=ttl)
+  abline(h=80,lty=2,col="red")
+  abline(v=kk,lty=3)
+}
+paired("PCA_01_Scree_Comparison", "PCA | Scree plots",
+       function() scree_panel(vc,"(a) Correlation-based PCA",TRUE),
+       function() scree_panel(v_cov,"(b) Covariance-based PCA"))
+paired("PCA_02_Cumulative_Variance_Comparison", "PCA | Cumulative explained variance",
+       function() cumulative_panel(vc,"(a) Correlation-based PCA",k),
+       function() cumulative_panel(v_cov,"(b) Covariance-based PCA",k_cov))
+
+# Both heatmaps use the same color scale.
+# This is more nice plotting code that gives us the heatmaps of 
+paired("PCA_03_Loadings_Comparison", "PCA | Variable-component correlations",
+       function() heat(cor_pc[,seq_len(k),drop=FALSE],"(a) Correlation-based PCA"),
+       function() heat(cor_pc_cov[,seq_len(k_cov),drop=FALSE],"(b) Covariance-based PCA"),
+       w=19,h=9)
+
+contribution_panel <- function(rotation,j,ttl) {
+  par(mar=c(5,13,3,1))
+  v <- sort(100*rotation[,j]^2)
+  barplot(v,horiz=TRUE,names.arg=gsub("_"," ",names(v)),las=1,
+          cex.names=.66,col="#2166AC",xlab="Contribution (%)",main=ttl)
+  abline(v=100/nrow(rotation),lty=2,col="red")
+}
+for(j in 1:2) {
+  jj <- j
+  paired(paste0("PCA_0",3+j,"_PC",j,"_Contributions"),
+         paste0("PCA | Contributions to PC",j),
+         function() contribution_panel(V,jj,"(a) Correlation-based PCA"),
+         function() contribution_panel(V_cov,jj,"(b) Covariance-based PCA"),
+         w=17,h=9)
+}
+
+set.seed(123)
+plot_rows <- sample.int(n,min(n,3000))
+score_panel <- function(f,ttl) {
+  par(mar=c(5,5,3,1))
+  plot(f$x[plot_rows,1],f$x[plot_rows,2],pch=19,cex=.35,
+       xlab="PC1 score",ylab="PC2 score",main=ttl)
+}
+paired("PCA_06_Scores_Comparison", "PCA | PC1 versus PC2 scores (same sampled rows)",
+       function() score_panel(pca_corr,"(a) Correlation-based PCA"),
+       function() score_panel(pca_cov,"(b) Covariance-based PCA"))
+paired("PCA_07_Original_Transformed_Covariance", "PCA | Covariance PCA on original and transformed data",
+       function() cumulative_panel(v_cov,"(a) Transformed covariance PCA",k_cov),
+       function() cumulative_panel(v_raw,"(b) Original covariance PCA",
+                                    which(v_raw$Cumulative_Percent>=80)[1]))
+
+# Exploratory factor analysis
+
+
+# ML fit statistics assume approximate multivariate normality.
+R <- cor(Z)
+KMO <- psych::KMO(R)
+bart <- psych::cortest.bartlett(R,n=n)
+write_table(data.frame(KMO=KMO$MSA,Bartlett_Chi_Square=bart$chisq,
+  df=bart$df,p_value=bart$p.value),"Factorability")
+write_table(data.frame(Variable=names(KMO$MSAi),MSA=as.numeric(KMO$MSAi)),
+  "Variable_MSA")
+candidates <- seq_len(min(6L,p-1L))
+candidates <- candidates[((p-candidates)^2-p-candidates)/2>0]
+models <- list()
+cmp <- list()
+for(m in candidates){
+  f <- tryCatch(suppressWarnings(psych::fa(R,nfactors=m,n.obs=n,
+    fm="ml",rotate="none")),error=function(e) NULL)
+  if(is.null(f)) next
+  ok <- all(is.finite(f$uniquenesses)) && all(f$uniquenesses>0) &&
+    all(f$uniquenesses<=1)
+  models[[as.character(m)]] <- f
+  cmp[[length(cmp)+1]] <- data.frame(Factors=m,df=f$dof,
+   Chi_square=f$STATISTIC,p_value=f$PVAL,BIC=f$BIC,Admissible=ok)
+}
+if(!length(cmp)) stop("None of the factor models could be fitted.")
+cmp <- do.call(rbind,cmp)
+write_table(cmp,"Factor_Count_Comparison")
+eligible <- which(cmp$Admissible & is.finite(cmp$BIC))
+if(!length(eligible)) stop("No eligible factor model. See Factor_Count_Comparison.csv.")
+best <- cmp$Factors[eligible[which.min(cmp$BIC[eligible])]]
+fit <- psych::fa(R,nfactors=best,n.obs=n,fm="ml",rotate="varimax")
+L <- unclass(fit$loadings)
+colnames(L) <- paste0("ML",seq_len(ncol(L)))
+write.csv(L,file.path(NUM,"Varimax_Factor_Loadings.csv"))
+write_table(data.frame(Variable=rownames(L),Communality=fit$communality,
+  Uniqueness=fit$uniquenesses),"Communalities_Uniquenesses")
+reproduced <- L%*%t(L)+diag(fit$uniquenesses)
+res <- R-reproduced
+write.csv(res,file.path(NUM,"Residual_Correlations.csv"))
+off <- res[lower.tri(res)]
+metrics <- data.frame(Factors=best,Chi_square=fit$STATISTIC,df=fit$dof,
+  p_value=fit$PVAL,BIC=fit$BIC,RMSR=sqrt(mean(off^2)),
+  TLI=if(length(fit$TLI)) fit$TLI else NA_real_,
+  RMSEA=if(length(fit$RMSEA)) fit$RMSEA[1] else NA_real_,
+  RMSEA_Lower=if(length(fit$RMSEA)>1) fit$RMSEA[2] else NA_real_,
+  RMSEA_Upper=if(length(fit$RMSEA)>2) fit$RMSEA[3] else NA_real_,
+  Max_Absolute_Residual=max(abs(off)),
+  Residual_Fraction_Above_005=mean(abs(off)>.05),
+  Near_Boundary_Uniquenesses=sum(fit$uniquenesses<.05))
+write_table(metrics,"FA_Fit_Statistics")
+if(!is.null(fit$Vaccounted)) write.csv(fit$Vaccounted,
+  file.path(NUM,"Factor_Variance_Accounting.csv"))
+saveRDS(fit,file.path(NUM,"Factor_Model.rds"))
+
+paired("FA_01_Factor_Selection", "FA | Factor selection and sampling adequacy",
+       function() {
+         par(mar=c(5,5,3,1))
+         plot(cmp$Factors,cmp$BIC,type="b",pch=19,
+              xlab="Number of factors",ylab="BIC (smaller is better)",
+              main="(a) Model selection by BIC")
+         abline(v=best,col="red",lty=2)
+       },
+       function() {
+         par(mar=c(5,12,3,1))
+         z <- sort(KMO$MSAi)
+         barplot(z,horiz=TRUE,names.arg=gsub("_"," ",names(z)),
+                 las=1,cex.names=.65,col="#2166AC",xlim=c(0,1),
+                 xlab="MSA",main="(b) Variable-level KMO adequacy")
+         abline(v=.5,col="red",lty=2)
+       },w=17,h=9)
+
+paired("FA_02_Factor_Structure", "FA | Rotated factor structure",
+       function() heat(L,"(a) Varimax factor loadings"),
+       function() {
+         par(mar=c(5,13,3,1))
+         H <- rbind(Communality=fit$communality,Uniqueness=fit$uniquenesses)
+         barplot(H,horiz=TRUE,names.arg=gsub("_"," ",rownames(L)),
+                 las=1,cex.names=.66,col=c("#2166AC","#CCCCCC"),
+                 xlim=c(0,1),xlab="Proportion of variance",
+                 main="(b) Communalities and uniquenesses")
+         legend("bottomright",legend=rownames(H),fill=c("#2166AC","#CCCCCC"),
+                cex=.75,bty="n")
+       },w=20,h=10)
+
+paired("FA_03_Observed_Reproduced", "FA | Correlation structure and model reproduction",
+       function() heat(R,"(a) Observed correlations"),
+       function() heat(reproduced,"(b) Model-reproduced correlations"),w=20,h=10)
+
+paired("FA_04_Residual_Diagnostics", "FA | Residual correlations and magnitude",
+       function() {
+         S <- res; diag(S) <- NA_real_
+         heat(S,"(a) Observed minus reproduced",lim=max(.05,max(abs(off))))
+       },
+       function() {
+         par(mar=c(5,5,3,1))
+         hist(abs(off),breaks=25,col="#2166AC",border="white",
+              xlab="Absolute off-diagonal residual",main="(b) Residual distribution")
+         abline(v=.05,col="red",lty=2)
+       },w=20,h=10)
+
+capture.output(list(PCA_Retention=read.csv(file.path(NUM,"PCA_Retention.csv")),
+ EFA_Fit=metrics,KMO=KMO$MSA,
+ Transformation=transformation,
+ Caution="ML EFA chi-square and RMSEA assume approximate multivariate normality."),
+ file=file.path(NUM,"Analysis_Summary.txt"))
+# Save the model comparisons in Dejene-Results.
+
+num_csv <- function(object, name, row.names=FALSE) {
+  write.csv(object, file.path(NUM, paste0(name, ".csv")), row.names=row.names)
+}
+for (nm in c("Correlation_Transformed", "Covariance_Transformed", "Covariance_Original")) {
+  f <- switch(nm, Correlation_Transformed=pca_corr,
+              Covariance_Transformed=pca_cov, Covariance_Original=pca_original_cov)
+  num_csv(summary_pca(f), paste0("PCA_Variance_", nm))
+  num_csv(data.frame(Variable=rownames(f$rotation), f$rotation,
+                     check.names=FALSE), paste0("PCA_Loadings_", nm))
+  num_csv(data.frame(Variable=rownames(f$rotation), 100*f$rotation^2,
+                     check.names=FALSE), paste0("PCA_Contributions_", nm))
+  num_csv(data.frame(Original_Row=row_id, f$x, check.names=FALSE),
+          paste0("PCA_Scores_", nm))
+  retained <- which(summary_pca(f)$Cumulative_Percent >= 80)[1]
+  num_csv(data.frame(Method=nm, N=n, Variables=p,
+            Components_80pct=retained,
+            Cumulative_at_80pct=summary_pca(f)$Cumulative_Percent[retained],
+            Kaiser_Count=if(nm == "Correlation_Transformed") sum(f$sdev^2 > 1) else NA_integer_),
+          paste0("PCA_Retention_", nm))
+  saveRDS(f, file.path(NUM, paste0("PCA_Model_", nm, ".rds")))
+}
+num_csv(data.frame(Variable=rownames(cor_pc), cor_pc, check.names=FALSE),
+        "PCA_Variable_Correlations_Transformed_Correlation")
+num_csv(data.frame(Variable=rownames(cor_pc_cov), cor_pc_cov, check.names=FALSE),
+        "PCA_Variable_Correlations_Transformed_Covariance")
+num_csv(data.frame(Variable=retained_variables, Mean=colMeans(transformed_data),
+                   SD=apply(transformed_data,2,sd)), "Transformed_Variable_Summary")
+num_csv(data.frame(Variable=rownames(R), R, check.names=FALSE), "FA_Observed_Correlations")
+num_csv(data.frame(Variable=rownames(reproduced), reproduced, check.names=FALSE),
+        "FA_Reproduced_Correlations")
+num_csv(data.frame(Variable=rownames(res), res, check.names=FALSE),
+        "FA_Residual_Correlations")
+num_csv(data.frame(Variable=rownames(L), L, check.names=FALSE),
+        "FA_Varimax_Loadings")
+num_csv(data.frame(Variable=rownames(L),
+                   Communality=as.numeric(fit$communality),
+                   Uniqueness=as.numeric(fit$uniquenesses)),
+        "FA_Communalities_Uniquenesses")
+num_csv(cmp, "FA_Factor_Count_Comparison")
+num_csv(metrics, "FA_Selected_Model_Fit")
+num_csv(data.frame(KMO_Overall=KMO$MSA,
+                   Bartlett_Chi_Square=bart$chisq,
+                   Bartlett_df=bart$df,
+                   Bartlett_p_value=bart$p.value), "FA_Factorability")
+num_csv(data.frame(Variable=names(KMO$MSAi), MSA=as.numeric(KMO$MSAi)),
+        "FA_KMO_by_Variable")
+if(!is.null(fit$Vaccounted)) {
+  va <- as.data.frame(fit$Vaccounted)
+  num_csv(data.frame(Measure=rownames(va), va, check.names=FALSE),
+          "FA_Factor_Variance_Accounting")
+}
+num_csv(data.frame(Absolute_Off_Diagonal_Residual=abs(off)),
+        "FA_Absolute_Residuals")
+saveRDS(fit, file.path(NUM, "FA_Selected_Model.rds"))
+
+sink(file.path(NUM,"Complete_Numerical_Summary.txt"))
+cat("PCA and factor analysis\n")
+cat("-----------------------\n")
+cat("Observations:",n,"| Variables:",p,"\n")
+cat("All three PCA models use the same rows and variables.\n")
+cat("Transformation details for each variable are in Variable_Transformations.csv.\n")
+cat("Original data use the recorded amounts.\n\n")
+for (nm in c("Correlation_Transformed", "Covariance_Transformed", "Covariance_Original")) {
+  f <- switch(nm, Correlation_Transformed=pca_corr,
+              Covariance_Transformed=pca_cov, Covariance_Original=pca_original_cov)
+  cat("\n---- PCA:", nm, "----\n")
+  print(summary_pca(f), row.names=FALSE, digits=6)
+  cat("\nLoading matrix:\n"); print(round(f$rotation,4))
+  cat("\nComponent contributions (%):\n"); print(round(100*f$rotation^2,2))
+}
+
+# save and quit
+
+cat("\nKMO and Bartlett's test\n")
+cat("Overall KMO:", KMO$MSA, "\n")
+print(data.frame(Variable=names(KMO$MSAi), MSA=as.numeric(KMO$MSAi)), row.names=FALSE)
+print(bart)
+cat("\nFactor selection\n"); print(cmp,row.names=FALSE)
+cat("\nSelected number of factors:",best,"\n")
+cat("\nRotated loadings\n"); print(round(L,4))
+cat("\nCommunalities and uniquenesses\n")
+print(data.frame(Variable=rownames(L), Communality=fit$communality,
+                 Uniqueness=fit$uniquenesses),row.names=FALSE)
+cat("\nFactor model fit\n"); print(metrics,row.names=FALSE)
+if(!is.null(fit$Vaccounted)) {
+ cat("\nVariance by factor\n"); print(fit$Vaccounted)
+}
+cat("\nAbsolute residual correlations\n")
+print(summary(abs(off)))
+cat("\nInterpret the ML chi-square test and RMSEA cautiously\n")
+cat("when multivariate normality is doubtful.\n")
+sink()
+cat("Results folder:",normalizePath(OUT),"\n")
+cat("Figures (PDF and PNG):",normalizePath(PLOTS),"\n")
+cat("Numerical results (CSV, RDS, TXT):",normalizePath(NUM),"\n")
 
