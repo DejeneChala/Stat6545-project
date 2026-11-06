@@ -1,3 +1,4 @@
+
 # ************************************************************************
 #
 #   R code for  PCA and FA
@@ -5,21 +6,42 @@
 #
 #
 #*************************************************************************
-# we set seed for reproducibilty and also set the folder the project result as follows
+# we set seed for reproducible and also set the folder the project result as follows
+
+
+
 
 set.seed(123)
 DATA_FILE <- "synthetic_credit_card_customer_behavior_dataset.csv"
 OUT <- "C:/Users/ddcdq7/OneDrive - University of Missouri/Fall2026/MVA/Project/Proj-results-dejene"
 dir.create(OUT, showWarnings=FALSE, recursive=TRUE)
-PLOTS <- file.path(OUT, "new-plots")
-dir.create(PLOTS, showWarnings=FALSE, recursive=TRUE)
 NUM <- file.path(OUT, "Dejene-Results")
 dir.create(NUM, showWarnings=FALSE, recursive=TRUE)
+if (!requireNamespace("writexl", quietly = TRUE)) {
+  stop("Install the Excel package first: install.packages('writexl')")
+}
+for (folder in c("PNG", "PDF", "Excel", "Text", "CSV", "Models")) {
+  dir.create(file.path(NUM, folder), recursive = TRUE, showWarnings = FALSE)
+}
+
+# Keep the CSV and save the same table as an Excel workbook.
+save_result_table <- function(x, file, row.names = TRUE) {
+  table <- as.data.frame(x)
+  utils::write.csv(table, file, row.names = row.names)
+  if (row.names) table <- data.frame(Row = rownames(table), table, check.names = FALSE)
+  workbook <- paste0(tools::file_path_sans_ext(basename(file)), ".xlsx")
+  writexl::write_xlsx(table, file.path(NUM, "Excel", workbook))
+}
+# read data Package check
+
 stopifnot(file.exists(DATA_FILE), requireNamespace("psych", quietly=TRUE))
 customer_data <- read.csv(DATA_FILE, check.names=TRUE)
 if ("Average_Transaction_Value" %in% names(customer_data) &&
     !"Avg_Transaction_Value" %in% names(customer_data))
   customer_data$Avg_Transaction_Value <- customer_data$Average_Transaction_Value
+
+# mining important variables of analyses as the original data contains huge number of parameters
+# our goal is to focus on monetary variables
 
 analysis_variables <- c("Annual_Income","Credit_Limit","Monthly_Spending",
   "Avg_Transaction_Value","Online_Shopping_Spending","Grocery_Spending",
@@ -33,73 +55,82 @@ monetary <- c("Annual_Income","Credit_Limit","Monthly_Spending",
   "Entertainment_Spending","Utility_Bill_Spending",
   "Outstanding_Balance","Payment_Amount","Cash_Advance_Amount")
 
-original_data <- customer_data[, analysis_variables, drop = FALSE]
-row_id <- seq_len(nrow(original_data))
+# 
+# Our data has been found not to have missing value but to be safe
+# the following code is used to check for anomalies in general to check for
+# missing value and conceptually invalid cases in  the data
 
-# Based on the outcome of the data diagnostics we used the box cox transformation
-# Using the following lines of code
-# Choose "boxcox" to estimate a power for each column, or "log" for natural logs.
-transformation <- "boxcox"
-stopifnot(transformation %in% c("boxcox", "log"))
+absent_columns <- setdiff(analysis_variables, names(customer_data))
+if (length(absent_columns)) stop("Required columns: ", paste(absent_columns, collapse = ", "))
+original_data <- customer_data[, analysis_variables, drop = FALSE]
+if (!all(vapply(original_data, is.numeric, logical(1)))) stop("PCA/FA columns must be numeric")
+row_id <- seq_len(nrow(original_data))
+if (nrow(original_data) < 100) stop("At least 100 observations are required.")
+if (any(as.matrix(original_data[, monetary, drop = FALSE]) < 0))
+  stop("Check the monetary columns for negative values.")
+
+
+# Transformation---- similar to what we did in diagnostics section
+# this was directly copped from that section, and as we did not link the code this line was added to align
+# our results with what we did in data diagnostics after the box visual analysis
+#
+
 transformed_data <- original_data
 transformations <- data.frame(Variable = analysis_variables, Method = "Original", Lambda = NA_real_,
                               stringsAsFactors = FALSE)
 
-
-
-box_cox <- function(log_values, lambda) {  if (lambda == 0) return(log_values)
-  expm1(lambda * log_values) / lambda}
+box_cox <- function(log_values, lambda) {
+  if (lambda == 0) return(log_values)
+  expm1(lambda * log_values) / lambda
+}
 
 for (variable in monetary) {
   values <- original_data[[variable]]
   index <- match(variable, analysis_variables)
   if (any(values == 0) || min(values) == max(values)) {
     transformations$Method[index] <- if (any(values == 0)) "Original (contains zero)" else "Original (constant)"
-    next
-  }
+    next  }
 
   log_values <- log(values)
-  lambda <- 0
-  if (transformation == "boxcox") {
-    # Centering the logs incorporates the Jacobian in the profile likelihood.
-    centered_logs <- log_values - mean(log_values)
-    loss <- function(power) log(var(box_cox(centered_logs, power)))
-    best_power <- optimize(loss, interval = c(-2, 2))$minimum
-    powers <- c(-2, 0, best_power, 2)
-    lambda <- powers[which.min(vapply(powers, loss, numeric(1)))]
-  }
+  # Centering the logs incorporates the Jacobian in the profile likelihood.
+  centered_logs <- log_values - mean(log_values)
+  loss <- function(power) log(var(box_cox(centered_logs, power)))
+  best_power <- optimize(loss, interval = c(-2, 2))$minimum
+  powers <- c(-2, 0, best_power, 2)
+  lambda <- powers[which.min(vapply(powers, loss, numeric(1)))]
   transformed_data[[variable]] <- box_cox(log_values, lambda)
-  transformations$Method[index] <- if (lambda == 0) "Natural log" else "Box-Cox"
+  transformations$Method[index] <- "Box-Cox"
   transformations$Lambda[index] <- lambda
 }
 
 # Drop constant and linearly dependent columns.
+# This is very important as such variables will make the covariance matrix singular
+
 varying_columns <- vapply(transformed_data,function(z) is.finite(sd(z)) && sd(z)>0,logical(1))
 scaled_columns <- scale(transformed_data[,varying_columns,drop=FALSE])
 q <- qr(scaled_columns,tol=1e-8)
 retained_variables <- colnames(scaled_columns)[sort(q$pivot[seq_len(q$rank)])]
 transformations$Retained <- analysis_variables %in% retained_variables
-write.csv(transformations, file.path(NUM, "Variable_Transformations.csv"), row.names = FALSE)
+save_result_table(transformations, file.path(NUM,"CSV","Variable_Transformations.csv"), row.names = FALSE)
 if(length(retained_variables)<3) stop("Too few independent columns.")
 original_data <- original_data[,retained_variables,drop=FALSE]
 transformed_data <- transformed_data[,retained_variables,drop=FALSE]
 Z <- scale(transformed_data)
 n <- nrow(Z); p <- ncol(Z)
-write.csv(data.frame(Original_Row=row_id),file.path(NUM,"Included_Rows.csv"),row.names=FALSE)
-write.csv(data.frame(Variable=retained_variables,Original_Mean=colMeans(original_data),
+save_result_table(data.frame(Original_Row=row_id),file.path(NUM,"CSV","Included_Rows.csv"),row.names=FALSE)
+save_result_table(data.frame(Variable=retained_variables,Original_Mean=colMeans(original_data),
   Transformed_Mean=colMeans(transformed_data),Transformed_SD=apply(transformed_data,2,sd)),
-  file.path(NUM,"Scaling_Parameters.csv"),row.names=FALSE)
+  file.path(NUM,"CSV","Scaling_Parameters.csv"),row.names=FALSE)
 
 plot_both <- function(name,fun,w=9,h=7) {
-  pdf(file.path(PLOTS,paste0(name,".pdf")),width=w,height=h,useDingbats=FALSE)
+  pdf(file.path(NUM,"PDF",paste0(name,".pdf")),width=w,height=h,useDingbats=FALSE)
   tryCatch(fun(),finally=dev.off())
-  png(file.path(PLOTS,paste0(name,".png")),width=w,height=h,units="in",res=300)
+  png(file.path(NUM,"PNG",paste0(name,".png")),width=w,height=h,units="in",res=300)
   tryCatch(fun(),finally=dev.off())
 }
 
-# Minimal numerical results were obtained based on the concepts discussed in the lecture notes
-# Graphs talks a lot; The following graphing functions were used to make our results more attractive
-# ===
+# This code was added to make our plot more attractive and handy for presentation
+
 heat <- function(M,main,lim=1) {
   M <- as.matrix(M); nr <- nrow(M); nc <- ncol(M)
   pal <- colorRampPalette(c("#2166AC","white","#B2182B"))(101)
@@ -114,11 +145,8 @@ heat <- function(M,main,lim=1) {
   axis(1,seq_len(nc),gsub("_"," ",colnames(M)),las=2,cex.axis=.75)
   axis(2,seq_len(nr),rev(gsub("_"," ",rownames(M))),las=1,cex.axis=.75)
 }
-write_table <- function(d,name) write.csv(d,file.path(NUM,paste0(name,".csv")),row.names=FALSE)
+write_table <- function(d,name) save_result_table(d,file.path(NUM,"CSV",paste0(name,".csv")),row.names=FALSE)
 # Use standardized variables for the main PCA.
-
-
-# Minimal PCA procedure
 
 pca_corr <- prcomp(transformed_data,center=TRUE,scale.=TRUE)
 pca_cov <- prcomp(transformed_data,center=TRUE,scale.=FALSE)
@@ -137,14 +165,14 @@ k <- which(vc$Cumulative_Percent>=80)[1]
 V <- pca_corr$rotation
 cor_pc <- sweep(V,2,pca_corr$sdev,"*")
 colnames(cor_pc) <- colnames(V)
-write.csv(V,file.path(NUM,"PCA_Loadings.csv"))
-write.csv(cor_pc,file.path(NUM,"Variable_PC_Correlations.csv"))
-write.csv(100*V^2,file.path(NUM,"Variable_Contributions_Percent.csv"))
+save_result_table(V,file.path(NUM,"CSV","PCA_Loadings.csv"))
+save_result_table(cor_pc,file.path(NUM,"CSV","Variable_PC_Correlations.csv"))
+save_result_table(100*V^2,file.path(NUM,"CSV","Variable_Contributions_Percent.csv"))
 write_table(data.frame(Original_Row=row_id,pca_corr$x),"PCA_Scores")
 write_table(data.frame(N=n,Variables=p,Retained_80pct=k,
   Retained_Kaiser=sum(vc$Eigenvalue>1),
   Cumulative_Variance_Percent=vc$Cumulative_Percent[k]),"PCA_Retention")
-saveRDS(pca_corr,file.path(NUM,"PCA_Model.rds"))
+saveRDS(pca_corr,file.path(NUM,"Models","PCA_Model.rds"))
 
 v_cov <- summary_pca(pca_cov)
 v_raw <- summary_pca(pca_original_cov)
@@ -162,12 +190,14 @@ paired <- function(name, title, left, right, w=15, h=7.5) {
     mtext(title, side=3, outer=TRUE, line=1.0, cex=1.35, font=2)
   }, w=w, h=h)
 }
-# Graphing:
+# Multiple graphs for saving space, optimal presentation of graphs
+
 scree_panel <- function(v, ttl, line1=FALSE) {
   par(mar=c(5,5,3,1))
   plot(seq_len(nrow(v)),v$Eigenvalue,type="b",pch=19,cex=.65,
        xlab="Principal component",ylab="Eigenvalue",main=ttl)
-  if(line1) abline(h=1,lty=2,col="red")}
+  if(line1) abline(h=1,lty=2,col="red")
+}
 cumulative_panel <- function(v, ttl, kk) {
   par(mar=c(5,5,3,1))
   plot(seq_len(nrow(v)),v$Cumulative_Percent,type="b",pch=19,cex=.65,
@@ -184,7 +214,6 @@ paired("PCA_02_Cumulative_Variance_Comparison", "PCA | Cumulative explained vari
        function() cumulative_panel(v_cov,"(b) Covariance-based PCA",k_cov))
 
 # Both heatmaps use the same color scale.
-# This is more nice plotting code that gives us the heatmaps of 
 paired("PCA_03_Loadings_Comparison", "PCA | Variable-component correlations",
        function() heat(cor_pc[,seq_len(k),drop=FALSE],"(a) Correlation-based PCA"),
        function() heat(cor_pc_cov[,seq_len(k_cov),drop=FALSE],"(b) Covariance-based PCA"),
@@ -222,7 +251,7 @@ paired("PCA_07_Original_Transformed_Covariance", "PCA | Covariance PCA on origin
                                     which(v_raw$Cumulative_Percent>=80)[1]))
 
 # Exploratory factor analysis
-
+# The actual work start here
 
 # ML fit statistics assume approximate multivariate normality.
 R <- cor(Z)
@@ -255,12 +284,12 @@ best <- cmp$Factors[eligible[which.min(cmp$BIC[eligible])]]
 fit <- psych::fa(R,nfactors=best,n.obs=n,fm="ml",rotate="varimax")
 L <- unclass(fit$loadings)
 colnames(L) <- paste0("ML",seq_len(ncol(L)))
-write.csv(L,file.path(NUM,"Varimax_Factor_Loadings.csv"))
+save_result_table(L,file.path(NUM,"CSV","Varimax_Factor_Loadings.csv"))
 write_table(data.frame(Variable=rownames(L),Communality=fit$communality,
   Uniqueness=fit$uniquenesses),"Communalities_Uniquenesses")
 reproduced <- L%*%t(L)+diag(fit$uniquenesses)
 res <- R-reproduced
-write.csv(res,file.path(NUM,"Residual_Correlations.csv"))
+save_result_table(res,file.path(NUM,"CSV","Residual_Correlations.csv"))
 off <- res[lower.tri(res)]
 metrics <- data.frame(Factors=best,Chi_square=fit$STATISTIC,df=fit$dof,
   p_value=fit$PVAL,BIC=fit$BIC,RMSR=sqrt(mean(off^2)),
@@ -272,9 +301,9 @@ metrics <- data.frame(Factors=best,Chi_square=fit$STATISTIC,df=fit$dof,
   Residual_Fraction_Above_005=mean(abs(off)>.05),
   Near_Boundary_Uniquenesses=sum(fit$uniquenesses<.05))
 write_table(metrics,"FA_Fit_Statistics")
-if(!is.null(fit$Vaccounted)) write.csv(fit$Vaccounted,
-  file.path(NUM,"Factor_Variance_Accounting.csv"))
-saveRDS(fit,file.path(NUM,"Factor_Model.rds"))
+if(!is.null(fit$Vaccounted)) save_result_table(fit$Vaccounted,
+  file.path(NUM,"CSV","Factor_Variance_Accounting.csv"))
+saveRDS(fit,file.path(NUM,"Models","Factor_Model.rds"))
 
 paired("FA_01_Factor_Selection", "FA | Factor selection and sampling adequacy",
        function() {
@@ -322,15 +351,18 @@ paired("FA_04_Residual_Diagnostics", "FA | Residual correlations and magnitude",
          abline(v=.05,col="red",lty=2)
        },w=20,h=10)
 
-capture.output(list(PCA_Retention=read.csv(file.path(NUM,"PCA_Retention.csv")),
+capture.output(list(PCA_Retention=read.csv(file.path(NUM,"CSV","PCA_Retention.csv")),
  EFA_Fit=metrics,KMO=KMO$MSA,
- Transformation=transformation,
+ Transformation="Box-Cox",
  Caution="ML EFA chi-square and RMSEA assume approximate multivariate normality."),
- file=file.path(NUM,"Analysis_Summary.txt"))
-# Save the model comparisons in Dejene-Results.
+ file=file.path(NUM,"Text","Analysis_Summary.txt"))
+
+###  
+# The following will save our result in my folder:
+# Save the the results and quit.
 
 num_csv <- function(object, name, row.names=FALSE) {
-  write.csv(object, file.path(NUM, paste0(name, ".csv")), row.names=row.names)
+  save_result_table(object, file.path(NUM,"CSV",paste0(name, ".csv")), row.names=row.names)
 }
 for (nm in c("Correlation_Transformed", "Covariance_Transformed", "Covariance_Original")) {
   f <- switch(nm, Correlation_Transformed=pca_corr,
@@ -348,7 +380,7 @@ for (nm in c("Correlation_Transformed", "Covariance_Transformed", "Covariance_Or
             Cumulative_at_80pct=summary_pca(f)$Cumulative_Percent[retained],
             Kaiser_Count=if(nm == "Correlation_Transformed") sum(f$sdev^2 > 1) else NA_integer_),
           paste0("PCA_Retention_", nm))
-  saveRDS(f, file.path(NUM, paste0("PCA_Model_", nm, ".rds")))
+  saveRDS(f, file.path(NUM,"Models",paste0("PCA_Model_", nm, ".rds")))
 }
 num_csv(data.frame(Variable=rownames(cor_pc), cor_pc, check.names=FALSE),
         "PCA_Variable_Correlations_Transformed_Correlation")
@@ -382,14 +414,15 @@ if(!is.null(fit$Vaccounted)) {
 }
 num_csv(data.frame(Absolute_Off_Diagonal_Residual=abs(off)),
         "FA_Absolute_Residuals")
-saveRDS(fit, file.path(NUM, "FA_Selected_Model.rds"))
+saveRDS(fit, file.path(NUM,"Models","FA_Selected_Model.rds"))
 
-sink(file.path(NUM,"Complete_Numerical_Summary.txt"))
+sink(file.path(NUM,"Text","Complete_Numerical_Summary.txt"))
 cat("PCA and factor analysis\n")
 cat("-----------------------\n")
 cat("Observations:",n,"| Variables:",p,"\n")
 cat("All three PCA models use the same rows and variables.\n")
 cat("Transformation details for each variable are in Variable_Transformations.csv.\n")
+print(transformations, row.names = FALSE)
 cat("Original data use the recorded amounts.\n\n")
 for (nm in c("Correlation_Transformed", "Covariance_Transformed", "Covariance_Original")) {
   f <- switch(nm, Correlation_Transformed=pca_corr,
@@ -399,8 +432,7 @@ for (nm in c("Correlation_Transformed", "Covariance_Transformed", "Covariance_Or
   cat("\nLoading matrix:\n"); print(round(f$rotation,4))
   cat("\nComponent contributions (%):\n"); print(round(100*f$rotation^2,2))
 }
-
-# save and quit
+# Convery the final message and quit
 
 cat("\nKMO and Bartlett's test\n")
 cat("Overall KMO:", KMO$MSA, "\n")
@@ -421,7 +453,26 @@ print(summary(abs(off)))
 cat("\nInterpret the ML chi-square test and RMSEA cautiously\n")
 cat("when multivariate normality is doubtful.\n")
 sink()
-cat("Results folder:",normalizePath(OUT),"\n")
-cat("Figures (PDF and PNG):",normalizePath(PLOTS),"\n")
-cat("Numerical results (CSV, RDS, TXT):",normalizePath(NUM),"\n")
+if (!file.copy(file.path(NUM, "Text", "Complete_Numerical_Summary.txt"),
+               file.path(NUM, "Text", "PCA_FA_Summary.text"), overwrite = TRUE))
+  stop("Could not save PCA_FA_Summary.text")
+cat("Results folder:", normalizePath(NUM), "\n")
+
+
+
+cat("\n",
+    "============================================================\n",
+    "                  Dear Dr. Paige                            \n",
+    "              *** THANK YOU VERY MUCH! ***                  \n",
+    "                                                            \n",
+    " Having this class with you was fun and quite fruitful      \n",
+    "                                                            \n",
+    "                                                            \n",
+    "          Thank you for going through this code upto this   \n",
+    "            point if you see this message                   \n",
+    "                 Best wishes,                               \n",
+    "                 Dejene Chala                                \n",
+    "                                                            \n",
+    "============================================================\n",
+    sep = "")
 
