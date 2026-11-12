@@ -6,3 +6,4 @@ Xs=cbind(Credit_Score,Occn,Annual_Income,Age)
 Y=cbind(Credit_Limit,Monthly_Spending)
 YFull=lm(Y~Xs)
 summary(YFull)
+#Do a box cox transformation to see what to do? log1p??????
