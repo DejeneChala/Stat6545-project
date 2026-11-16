@@ -36,6 +36,14 @@ for (i in 1:m){
     print(paste("Response variable",colnames(pred1)[i]))
     print(c(Lower,Upper))
 }
+c("Prediction Intervals for the Mean")
+for (i in 1:m){
+    Lower=pred1[i]-conf*sqrt((1+temp)*E[i,i]/(n-r-1))
+    Upper=pred1[i]+conf*sqrt((1+temp)*E[i,i]/(n-r-1))
+    print(paste("Response variable",colnames(pred1)[i]))
+    print(c(Lower,Upper))
+}
+
 
 
 
@@ -43,23 +51,127 @@ for (i in 1:m){
 pt1=powerTransform(Y1Full)
 pt1
 Y1Trans=bcPower(Y1,lambda=pt1$lambda)
-Y1TransFull=lm(Y1Trans~X1)
+colnames(Y1Trans)=colnames(Y1)
+datT=data.frame(Y1Trans,X1)
+Y1TransFull=lm(cbind(Credit_Limit,Monthly_Spending)~.-Credit_Limit-Monthly_Spending,data=datT)
 summary(Y1TransFull)
 
+Z01=datT[1,]
+pred1=predict(Y1TransFull,Z01)
+E=t(Y1TransFull$residuals)%*%Y1TransFull$residuals
+Z=as.matrix(model.matrix(Y1TransFull))
+n=nrow(Y1)
+m=ncol(Y1)
+r=ncol(Z)-1
+Z01=c(1,unlist(Z01[,colnames(Z)[-1]]))
+c_prod=data.matrix(solve(crossprod(Z)))
+temp=t(Z01)%*%c_prod%*%Z01
+temp=c(temp)
+alpha=0.05
+conf=sqrt(m*(n-r-1)*qf(1-alpha,m,n-r-m)/(n-r-m))
+c("Confidence Intervals for the Mean")
+print(paste(z0=Z01))
+for (i in 1:m){
+    Lower=pred1[i]-conf*sqrt(temp*E[i,i]/(n-r-1))
+    Upper=pred1[i]+conf*sqrt(temp*E[i,i]/(n-r-1))
+    print(paste("Response variable",colnames(pred1)[i]))
+    print(c(Lower,Upper))
+}
+c("Prediction Intervals for the Mean")
+for (i in 1:m){
+    Lower=pred1[i]-conf*sqrt((1+temp)*E[i,i]/(n-r-1))
+    Upper=pred1[i]+conf*sqrt((1+temp)*E[i,i]/(n-r-1))
+    print(paste("Response variable",colnames(pred1)[i]))
+    print(c(Lower,Upper))
+}
 
 
+
+#A second Linear Model. Spending by category.
 #A second Linear Model. Spending by category.
 X2=cbind(Age,Annual_Income,Credit_Limit,Card_Age_Months,GMat,Occn,Ctype)
 Y2=cbind(Online_Shopping_Spending,Grocery_Spending,Fuel_Spending,
             Dining_Spending,Travel_Spending,Entertainment_Spending,Utility_Bill_Spending
 )
-Y2Full=lm(Y2~X2)
+dat2=data.frame(Y2,X2)
+Y2Full=lm(cbind(Online_Shopping_Spending,Grocery_Spending,Fuel_Spending,
+  Dining_Spending,Travel_Spending,Entertainment_Spending,Utility_Bill_Spending)
+  ~.-Online_Shopping_Spending-Grocery_Spending-Fuel_Spending-Dining_Spending
+  -Travel_Spending-Entertainment_Spending-Utility_Bill_Spending,data=dat2
+)
 summary(Y2Full)
+Z01=dat2[1,]
+pred1=predict(Y2Full,Z01)
+E=t(Y2Full$residuals)%*%Y2Full$residuals
+Z=as.matrix(model.matrix(Y2Full))
+n=nrow(Y2)
+m=ncol(Y2)
+r=ncol(Z)-1
+Z01=c(1,unlist(Z01[,colnames(Z)[-1]]))
+c_prod=data.matrix(solve(crossprod(Z)))
+temp=t(Z01)%*%c_prod%*%Z01
+temp=c(temp)
+alpha=0.05
+conf=sqrt(m*(n-r-1)*qf(1-alpha,m,n-r-m)/(n-r-m))
+c("Confidence Intervals for the Mean")
+print(paste(z0=Z01))
+for (i in 1:m){
+    Lower=pred1[i]-conf*sqrt(temp*E[i,i]/(n-r-1))
+    Upper=pred1[i]+conf*sqrt(temp*E[i,i]/(n-r-1))
+    print(paste("Response variable",colnames(pred1)[i]))
+    print(c(Lower,Upper))
+}
+c("Prediction Intervals for the Mean")
+for (i in 1:m){
+    Lower=pred1[i]-conf*sqrt((1+temp)*E[i,i]/(n-r-1))
+    Upper=pred1[i]+conf*sqrt((1+temp)*E[i,i]/(n-r-1))
+    print(paste("Response variable",colnames(pred1)[i]))
+    print(c(Lower,Upper))
+}
+
+
+
+
 pt2=powerTransform(Y2Full)
 pt2
 Y2Trans=bcPower(Y2,lambda=pt2$lambda)
-Y2TransFull=lm(Y2Trans~X2)
+colnames(Y2Trans)=colnames(Y2)
+datT2=data.frame(Y2Trans,X2)
+Y2TransFull=lm(cbind(Online_Shopping_Spending,Grocery_Spending,Fuel_Spending,
+  Dining_Spending,Travel_Spending,Entertainment_Spending,Utility_Bill_Spending)
+  ~.-Online_Shopping_Spending-Grocery_Spending-Fuel_Spending-Dining_Spending
+  -Travel_Spending-Entertainment_Spending-Utility_Bill_Spending,data=datT2
+)
 summary(Y2TransFull)
+
+Z01=datT2[1,]
+pred1=predict(Y2TransFull,Z01)
+E=t(Y2TransFull$residuals)%*%Y2TransFull$residuals
+Z=as.matrix(model.matrix(Y2TransFull))
+n=nrow(Y2)
+m=ncol(Y2)
+r=ncol(Z)-1
+Z01=c(1,unlist(Z01[,colnames(Z)[-1]]))
+c_prod=data.matrix(solve(crossprod(Z)))
+temp=t(Z01)%*%c_prod%*%Z01
+temp=c(temp)
+alpha=0.05
+conf=sqrt(m*(n-r-1)*qf(1-alpha,m,n-r-m)/(n-r-m))
+c("Confidence Intervals for the Mean")
+print(paste(z0=Z01))
+for (i in 1:m){
+    Lower=pred1[i]-conf*sqrt(temp*E[i,i]/(n-r-1))
+    Upper=pred1[i]+conf*sqrt(temp*E[i,i]/(n-r-1))
+    print(paste("Response variable",colnames(pred1)[i]))
+    print(c(Lower,Upper))
+}
+c("Prediction Intervals for the Mean")
+for (i in 1:m){
+    Lower=pred1[i]-conf*sqrt((1+temp)*E[i,i]/(n-r-1))
+    Upper=pred1[i]+conf*sqrt((1+temp)*E[i,i]/(n-r-1))
+    print(paste("Response variable",colnames(pred1)[i]))
+    print(c(Lower,Upper))
+}
 
 
 
