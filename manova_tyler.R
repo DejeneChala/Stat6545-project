@@ -68,7 +68,8 @@ card_kept=
                     Payment_Amount,Credit_Score,Card_Age_Months)
 )
 
-
+#Reset the output directory to prevent clogging up the GitHub repository with large output files.
+setwd(r"(C:\Users\tjgfx9\OneDrive - University of Missouri\Masters\Stat 6545\Project\Results)")
 #Set Up for MANOVA
 CatVars=c('Gender','Occupation','Card_Type')
 NumVars=c('Age','Annual_Income','Credit_Limit','Card_Age_Months','Monthly_Spending',
