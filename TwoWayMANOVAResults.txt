@@ -1,0 +1,291 @@
+MANOVA Results for: Gender and Occupation
+
+
+                  Df   Wilks approx F num Df den Df   Pr(>F)    
+Gender             1 0.86338   1.6022      8  81.00   0.1371    
+Occupation         5 0.18599   4.1896     40 355.87 1.02e-13 ***
+Gender:Occupation  5 0.77209   0.5439     40 355.87   0.9897    
+Residuals         88                                            
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+                  Df Hotelling-Lawley approx F num Df den Df Pr(>F)    
+Gender             1          0.15824   1.6022      8     81 0.1371    
+Occupation         5          2.72318   5.4055     40    397 <2e-16 ***
+Gender:Occupation  5          0.27307   0.5420     40    397 0.9902    
+Residuals         88                                                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+                  Df     Roy approx F num Df den Df Pr(>F)    
+Gender             1 0.15824   1.6022      8     81 0.1371    
+Occupation         5 2.11115  22.4309      8     85 <2e-16 ***
+Gender:Occupation  5 0.15217   1.6168      8     85 0.1320    
+Residuals         88                                          
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+                  Df  Pillai approx F num Df den Df    Pr(>F)    
+Gender             1 0.13662   1.6022      8     81    0.1371    
+Occupation         5 1.17110   3.2497     40    425 1.127e-09 ***
+Gender:Occupation  5 0.24538   0.5483     40    425    0.9892    
+Residuals         88                                             
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Gender and Occupation
+ANOVA Results for: Age
+                  Df Sum Sq Mean Sq F value   Pr(>F)    
+Gender             1  0.451  0.4514   7.216 0.008638 ** 
+Occupation         5  1.445  0.2891   4.622 0.000861 ***
+Gender:Occupation  5  0.648  0.1296   2.072 0.076471 .  
+Residuals         88  5.505  0.0626                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Annual_Income
+                  Df Sum Sq Mean Sq F value Pr(>F)    
+Gender             1   0.73   0.734   2.282  0.134    
+Occupation         5  47.75   9.550  29.693 <2e-16 ***
+Gender:Occupation  5   0.27   0.055   0.171  0.973    
+Residuals         88  28.30   0.322                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Credit_Limit
+                  Df Sum Sq Mean Sq F value   Pr(>F)    
+Gender             1   1.40   1.403   1.733    0.191    
+Occupation         5  98.44  19.687  24.330 2.67e-15 ***
+Gender:Occupation  5   0.60   0.119   0.147    0.980    
+Residuals         88  71.21   0.809                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Card_Age_Months
+                  Df Sum Sq Mean Sq F value Pr(>F)
+Gender             1  0.380  0.3803   1.116  0.294
+Occupation         5  2.917  0.5834   1.711  0.140
+Gender:Occupation  5  1.171  0.2343   0.687  0.634
+Residuals         88 29.998  0.3409               
+ANOVA Results for: Monthly_Spending
+                  Df Sum Sq Mean Sq F value   Pr(>F)    
+Gender             1   0.74   0.739   1.403    0.239    
+Occupation         5  57.11  11.422  21.674 4.43e-14 ***
+Gender:Occupation  5   0.09   0.018   0.034    0.999    
+Residuals         88  46.38   0.527                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Outstanding_Balance
+                  Df Sum Sq Mean Sq F value   Pr(>F)    
+Gender             1   2.51   2.514   2.109     0.15    
+Occupation         5 101.63  20.326  17.052 9.27e-12 ***
+Gender:Occupation  5   0.88   0.176   0.147     0.98    
+Residuals         88 104.89   1.192                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Payment_Amount
+                  Df Sum Sq Mean Sq F value   Pr(>F)    
+Gender             1   1.14   1.139   1.073    0.303    
+Occupation         5  95.25  19.050  17.947 3.13e-12 ***
+Gender:Occupation  5   1.00   0.201   0.189    0.966    
+Residuals         88  93.41   1.061                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Credit_Score
+                  Df Sum Sq  Mean Sq F value Pr(>F)
+Gender             1 0.0034 0.003392   0.326  0.569
+Occupation         5 0.0670 0.013394   1.287  0.277
+Gender:Occupation  5 0.0191 0.003824   0.368  0.870
+Residuals         88 0.9156 0.010405               
+********************************************************
+
+
+
+
+MANOVA Results for: Gender and Card_Type
+
+
+                 Df   Wilks approx F num Df den Df    Pr(>F)    
+Gender            1 0.67391   5.0202      8  83.00 4.253e-05 ***
+Card_Type         4 0.00828  25.6676     32 307.68 < 2.2e-16 ***
+Gender:Card_Type  4 0.77265   0.6966     32 307.68    0.8919    
+Residuals        90                                             
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+                 Df Hotelling-Lawley approx F num Df den Df    Pr(>F)    
+Gender            1            0.484    5.020      8     83 4.253e-05 ***
+Card_Type         4           88.039  224.224     32    326 < 2.2e-16 ***
+Gender:Card_Type  4            0.269    0.685     32    326    0.9025    
+Residuals        90                                                      
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+                 Df    Roy approx F num Df den Df    Pr(>F)    
+Gender            1  0.484     5.02      8     83 4.253e-05 ***
+Card_Type         4 87.704   942.82      8     86 < 2.2e-16 ***
+Gender:Card_Type  4  0.109     1.17      8     86    0.3258    
+Residuals        90                                            
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+                 Df  Pillai approx F num Df den Df    Pr(>F)    
+Gender            1 0.32609   5.0202      8     83 4.253e-05 ***
+Card_Type         4 1.27513   5.0306     32    344 4.739e-15 ***
+Gender:Card_Type  4 0.24753   0.7091     32    344    0.8808    
+Residuals        90                                             
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Gender and Card_Type
+ANOVA Results for: Age
+                 Df Sum Sq Mean Sq F value Pr(>F)  
+Gender            1  0.451  0.4514   6.057 0.0158 *
+Card_Type         4  0.673  0.1683   2.259 0.0689 .
+Gender:Card_Type  4  0.218  0.0545   0.731 0.5729  
+Residuals        90  6.707  0.0745                 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Annual_Income
+                 Df Sum Sq Mean Sq F value Pr(>F)    
+Gender            1   0.73   0.734   4.505 0.0365 *  
+Card_Type         4  60.73  15.184  93.185 <2e-16 ***
+Gender:Card_Type  4   0.93   0.233   1.429 0.2309    
+Residuals        90  14.66   0.163                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Credit_Limit
+                 Df Sum Sq Mean Sq F value  Pr(>F)    
+Gender            1   1.40    1.40   8.221 0.00516 ** 
+Card_Type         4 153.90   38.47 225.502 < 2e-16 ***
+Gender:Card_Type  4   0.99    0.25   1.447 0.22500    
+Residuals        90  15.36    0.17                    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Card_Age_Months
+                 Df Sum Sq Mean Sq F value Pr(>F)
+Gender            1   0.38  0.3803   1.072  0.303
+Card_Type         4   1.32  0.3301   0.931  0.450
+Gender:Card_Type  4   0.85  0.2128   0.600  0.664
+Residuals        90  31.91  0.3546               
+ANOVA Results for: Monthly_Spending
+                 Df Sum Sq Mean Sq F value Pr(>F)    
+Gender            1   0.74   0.739    3.14 0.0798 .  
+Card_Type         4  80.91  20.227   85.91 <2e-16 ***
+Gender:Card_Type  4   1.48   0.370    1.57 0.1891    
+Residuals        90  21.19   0.235                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Outstanding_Balance
+                 Df Sum Sq Mean Sq F value Pr(>F)    
+Gender            1   2.51    2.51   5.636 0.0197 *  
+Card_Type         4 164.69   41.17  92.302 <2e-16 ***
+Gender:Card_Type  4   2.56    0.64   1.436 0.2285    
+Residuals        90  40.15    0.45                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Payment_Amount
+                 Df Sum Sq Mean Sq F value Pr(>F)    
+Gender            1   1.14    1.14   2.612  0.110    
+Card_Type         4 147.64   36.91  84.632 <2e-16 ***
+Gender:Card_Type  4   2.78    0.69   1.593  0.183    
+Residuals        90  39.25    0.44                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Credit_Score
+                 Df Sum Sq  Mean Sq F value Pr(>F)
+Gender            1 0.0034 0.003392   0.316  0.575
+Card_Type         4 0.0196 0.004893   0.456  0.767
+Gender:Card_Type  4 0.0174 0.004350   0.406  0.804
+Residuals        90 0.9647 0.010719               
+********************************************************
+
+
+
+
+MANOVA Results for: Occupation and Card_Type
+
+
+                     Df   Wilks approx F num Df den Df Pr(>F)    
+Occupation            5 0.01008  15.0131     40 320.99 <2e-16 ***
+Card_Type             4 0.01341  18.7819     32 270.81 <2e-16 ***
+Occupation:Card_Type 10 0.40916   0.8919     80 471.57 0.7319    
+Residuals            80                                          
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+                     Df Hotelling-Lawley approx F num Df den Df Pr(>F)    
+Occupation            5           52.418   93.566     40    357 <2e-16 ***
+Card_Type             4           60.271  134.668     32    286 <2e-16 ***
+Occupation:Card_Type 10            0.976    0.869     80    570 0.7798    
+Residuals            80                                                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+                     Df    Roy approx F num Df den Df  Pr(>F)    
+Occupation            5 51.708   497.69      8     77 < 2e-16 ***
+Card_Type             4 60.059   570.56      8     76 < 2e-16 ***
+Occupation:Card_Type 10  0.303     2.42     10     80 0.01419 *  
+Residuals            80                                          
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+                     Df  Pillai approx F num Df den Df    Pr(>F)    
+Occupation            5 1.54725   4.3132     40    385 1.606e-14 ***
+Card_Type             4 1.17227   3.9384     32    304 1.469e-10 ***
+Occupation:Card_Type 10 0.82187   0.9160     80    640     0.682    
+Residuals            80                                             
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Occupation and Card_Type
+ANOVA Results for: Age
+                     Df Sum Sq Mean Sq F value  Pr(>F)   
+Occupation            5  1.195 0.23891   3.262 0.00988 **
+Card_Type             4  0.148 0.03703   0.506 0.73171   
+Occupation:Card_Type 10  0.848 0.08482   1.158 0.33128   
+Residuals            80  5.859 0.07323                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Annual_Income
+                     Df Sum Sq Mean Sq F value Pr(>F)    
+Occupation            5  48.37   9.675 101.003 <2e-16 ***
+Card_Type             4  19.69   4.924  51.402 <2e-16 ***
+Occupation:Card_Type 10   1.33   0.133   1.391    0.2    
+Residuals            80   7.66   0.096                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Credit_Limit
+                     Df Sum Sq Mean Sq F value Pr(>F)    
+Occupation            5  99.66  19.931 203.606 <2e-16 ***
+Card_Type             4  62.84  15.709 160.475 <2e-16 ***
+Occupation:Card_Type 10   1.32   0.132   1.351  0.218    
+Residuals            80   7.83   0.098                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Card_Age_Months
+                     Df Sum Sq Mean Sq F value Pr(>F)
+Occupation            5  3.012  0.6025   1.726  0.138
+Card_Type             4  0.176  0.0439   0.126  0.973
+Occupation:Card_Type 10  3.353  0.3353   0.961  0.484
+Residuals            80 27.925  0.3491               
+ANOVA Results for: Monthly_Spending
+                     Df Sum Sq Mean Sq F value Pr(>F)    
+Occupation            5  57.73  11.545  61.560 <2e-16 ***
+Card_Type             4  29.86   7.466  39.806 <2e-16 ***
+Occupation:Card_Type 10   1.72   0.172   0.917  0.522    
+Residuals            80  15.00   0.188                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Outstanding_Balance
+                     Df Sum Sq Mean Sq F value Pr(>F)    
+Occupation            5 103.31  20.662  51.493 <2e-16 ***
+Card_Type             4  69.18  17.296  43.103 <2e-16 ***
+Occupation:Card_Type 10   5.32   0.532   1.326  0.231    
+Residuals            80  32.10   0.401                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Payment_Amount
+                     Df Sum Sq Mean Sq F value Pr(>F)    
+Occupation            5  96.08  19.215  53.046 <2e-16 ***
+Card_Type             4  60.38  15.094  41.670 <2e-16 ***
+Occupation:Card_Type 10   5.37   0.537   1.484  0.161    
+Residuals            80  28.98   0.362                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Credit_Score
+                     Df Sum Sq  Mean Sq F value Pr(>F)
+Occupation            5 0.0688 0.013756   1.289  0.277
+Card_Type             4 0.0152 0.003807   0.357  0.839
+Occupation:Card_Type 10 0.0676 0.006759   0.634  0.781
+Residuals            80 0.8535 0.010669               
+********************************************************
+
+
+
+

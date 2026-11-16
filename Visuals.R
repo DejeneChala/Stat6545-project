@@ -46,3 +46,15 @@ P+geom_point(aes(x=Credit_Score,y=Entertainment_Spending))
 P+geom_point(aes(x=Credit_Score,y=EMI_Count,alpha=0.0001,colour=NA))
 
 
+p1=ggplot(data=card_kept,aes(x=Occupation,y=Credit_Limit,fill=Occupation))+
+  geom_boxplot()+
+  theme(axis.text.x = element_text(angle = 45,hjust=1))+
+  labs(title='Boxplot of Credit Limit by Occupation'
+)
+
+p2=ggplot(data=card_kept,aes(x=Occupation,y=Monthly_Spending,fill=Occupation))+
+  geom_boxplot()+
+  theme(axis.text.x = element_text(angle = 45,hjust=1))+
+  labs(title='Boxplot of Monthly Spending by Occupation'
+)
+p1

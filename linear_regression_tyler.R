@@ -7,3 +7,5 @@ Y=cbind(Credit_Limit,Monthly_Spending)
 YFull=lm(Y~Xs)
 summary(YFull)
 #Do a box cox transformation to see what to do? log1p??????
+pt=powerTransform(YFull)
+#This suggests that we should do a log transformation on the response variables.

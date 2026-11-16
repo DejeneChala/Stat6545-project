@@ -1,7 +1,7 @@
 ############################################################
 #MANOVA
 ############################################################
-setwd(r"(C:\Users\tjgfx9\OneDrive - University of Missouri\Masters\Stat6545-project)")
+setwd(r"(C:\Users\tjgfx9\OneDrive - University of Missouri\Masters\Stat6545-project)") #Adjust your working directory as needed.
 credit_data <- read.csv("synthetic_credit_card_customer_behavior_dataset.csv")
 Split.Cov=function(df,column,vars){
   #Separate the Data Frame into separate groups
@@ -65,19 +65,18 @@ BoxM.Test=function(Cov,Spool,Ns){
 card_kept=
   subset(credit_data,select=c(Age,Gender,Occupation,Card_Type,Annual_Income,
                     Credit_Limit,Monthly_Spending,Outstanding_Balance,
-                    Statement_Balance,Payment_Amount,Credit_Score)
+                    Payment_Amount,Credit_Score,Card_Age_Months)
 )
 
 
 #Set Up for MANOVA
 CatVars=c('Gender','Occupation','Card_Type')
-NumVars=c('Age','Annual_Income','Credit_Limit','Monthly_Spending',
-          'Outstanding_Balance','Statement_Balance','Payment_Amount',
-          'Credit_Score'
+NumVars=c('Age','Annual_Income','Credit_Limit','Card_Age_Months','Monthly_Spending',
+          'Outstanding_Balance','Payment_Amount','Credit_Score'
 )
 set.seed(42)
 Chosen=sample(1:nrow(card_kept),100)    #Start with a random sample of 100 rows
-card_kept_chosen=card_kept[Chosen,]     #Here is Chosen Line
+card_kept_chosen=card_kept[Chosen,]    #Here is Chosen Line
 #Keep only the numeric and categorical variables in separate matrices.
 card_kept_chosen_nums=(card_kept_chosen %>%
   select(all_of(NumVars)) %>%
@@ -92,6 +91,8 @@ card_kept_chosen_nums=log1p(card_kept_chosen_nums)
 card_kept_chosen_nums=as.data.frame(card_kept_chosen_nums)
 log_sub_card_kept=cbind(card_kept_chosen_nums,card_kept_chosen_cats)
 #Do Box's M Test to see if the covariance matrices are equal across groups for each categorical variable.
+
+sink('BoxMResults.txt',split=TRUE)
 for (i in 1:length(CatVars)){
   credit_test=Split.Cov(log_sub_card_kept,CatVars[i],NumVars)
   Cov=credit_test$Cov
@@ -102,8 +103,10 @@ for (i in 1:length(CatVars)){
   cat('\n','p-value =',pval)
   cat('\n\n\n\n\n')
 }
+sink()
 
 #One Way MANOVA (and ANOVA)for each categorical variable.
+sink('OneWayMANOVAResults.txt',split=TRUE)
 for (i in 1:length(CatVars)){
   cat('MANOVA Results for:',CatVars[i])
   cat('\n\n')
@@ -126,9 +129,9 @@ for (i in 1:length(CatVars)){
   cat('********************************************************')
   cat('\n\n\n\n\n')
 }
+sink()
 
-
-
+sink('OneWayCIResults.txt',split=TRUE)
 #One Way Bonferroni CI's
 p=length(NumVars)
 alpha=0.05
@@ -198,9 +201,9 @@ for (l in 1:length(CatVars)){
     }
   }
 }
+sink()
 
-
-
+sink('TwoWayMANOVAResults.txt',split=TRUE)
 #Two Way MANOVA (and ANOVA) for each pair of categorical variables.
 for (i in 1:(length(CatVars)-1)){
   for (j in (i+1):length(CatVars)){
@@ -226,6 +229,98 @@ for (i in 1:(length(CatVars)-1)){
     cat('\n\n\n\n\n')
   }
 }
-
+sink()
 
 #In Post, add in Bonferroni CI's and CI's for two way MANOVA.
+#Two Way CI's (Bonferroni and Unadjusted) for main effects of each pair of categorical variables.
+p=length(NumVars)
+alpha=0.05
+sink('TwoWayCI.txt',split=TRUE)
+for (w in 1:2){
+  if (w==1){cat('BONFERRONI CI\'S\n\n')}
+  if (w==2){cat('UNADJUSTED CI\'S\n\n')}
+  for (l in 1:(length(CatVars)-1)){
+    for (q in (l+1):length(CatVars)){
+      A=CatVars[l]
+      B=CatVars[q]
+      dat=log_sub_card_kept
+      dat$Cell=paste(dat[[A]],dat[[B]],sep='|')
+      SplitIt=Split.Cov(dat,'Cell',NumVars)
+      Spool=SplitIt$Spool
+      Ns=SplitIt$Ns
+      n=SplitIt$total
+      X=SplitIt$X
+      stopifnot(identical(colnames(X[[1]]),NumVars))
+      Alev=sort(unique(as.character(dat[[A]])))
+      Blev=sort(unique(as.character(dat[[B]])))
+      g=length(Alev)
+      b=length(Blev)
+      ncell=length(X)
+      if(ncell!=g*b){cat('Skipping',A,'and',B,': at least one cell is empty\n\n\n'); next}
+      df=n-ncell
+      m=p*(g*(g-1)/2+b*(b-1)/2)   #All pairwise comparisons for both factors.
+      if (w==1){tcrit=qt(1-alpha/(2*m),df)}
+      if (w==2){tcrit=qt(1-alpha/2,df)}
+      xmean=list()
+      Nvec=c()
+      for (i in 1:ncell){
+        xmean[[names(X)[i]]]=colMeans(X[[i]])
+        Nvec[names(X)[i]]=Ns[[i]]
+      }
+      #Marginal means (average of cell means) and variance weights for each level of A and of B.
+      MA=matrix(0,nrow=g,ncol=p)
+      VA=rep(0,g)
+      for (j in 1:g){
+        for (k in 1:b){
+          nm=paste(Alev[j],Blev[k],sep='|')
+          MA[j,]=MA[j,]+xmean[[nm]]/b
+          VA[j]=VA[j]+(1/Nvec[[nm]])/b^2
+        }
+      }
+      MB=matrix(0,nrow=b,ncol=p)
+      VB=rep(0,b)
+      for (k in 1:b){
+        for (j in 1:g){
+          nm=paste(Alev[j],Blev[k],sep='|')
+          MB[k,]=MB[k,]+xmean[[nm]]/g
+          VB[k]=VB[k]+(1/Nvec[[nm]])/g^2
+        }
+      }
+      #CI's for differences between levels of A.
+      for (i in 1:p){
+        for (j in 1:(g-1)){
+          for (k in (j+1):g){
+            Diff=MA[j,i]-MA[k,i]
+            Lower=Diff-tcrit*sqrt((VA[j]+VA[k])*Spool[i,i])
+            Upper=Diff+tcrit*sqrt((VA[j]+VA[k])*Spool[i,i])
+            if(Lower*Upper>0){
+              cat('Response',NumVars[i],'| Compare',A,'(adjusting for',B,'):',Alev[j],'-',Alev[k],'\n')
+              cat('Diff =',Diff,'Lower =',Lower,'Upper =',Upper)
+              cat('\n****************************')
+              cat('\n\n\n\n\n')
+            }
+          }
+        }
+      }
+
+      
+      #CI's for differences between levels of B.
+      for (i in 1:p){
+        for (j in 1:(b-1)){
+          for (k in (j+1):b){
+            Diff=MB[j,i]-MB[k,i]
+            Lower=Diff-tcrit*sqrt((VB[j]+VB[k])*Spool[i,i])
+            Upper=Diff+tcrit*sqrt((VB[j]+VB[k])*Spool[i,i])
+            if(Lower*Upper>0){
+              cat('Response',NumVars[i],'| Compare',B,'(adjusting for',A,'):',Blev[j],'-',Blev[k],'\n')
+              cat('Diff =',Diff,'Lower =',Lower,'Upper =',Upper)
+              cat('\n****************************')
+              cat('\n\n\n\n\n')
+            }
+          }
+        }
+      }
+    }
+  }
+}
+sink()

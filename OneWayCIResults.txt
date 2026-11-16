@@ -1,0 +1,1470 @@
+Response Annual_Income | Compare Occupation : Retired - Business Owner 
+Lower = -2.7445 Upper = -1.077537
+****************************
+
+
+
+
+Response Annual_Income | Compare Occupation : Self-Employed - Business Owner 
+Lower = -1.832382 Upper = -0.4453842
+****************************
+
+
+
+
+Response Annual_Income | Compare Occupation : Self-Employed - Student 
+Lower = 0.7675601 Upper = 2.687771
+****************************
+
+
+
+
+Response Annual_Income | Compare Occupation : Private Employee - Business Owner 
+Lower = -2.083466 Upper = -0.8880244
+****************************
+
+
+
+
+Response Annual_Income | Compare Occupation : Private Employee - Student 
+Lower = 0.487421 Upper = 2.274186
+****************************
+
+
+
+
+Response Annual_Income | Compare Occupation : Government Employee - Business Owner 
+Lower = -1.90107 Upper = -0.4925679
+****************************
+
+
+
+
+Response Annual_Income | Compare Occupation : Government Employee - Student 
+Lower = 0.7018285 Upper = 2.63763
+****************************
+
+
+
+
+Response Annual_Income | Compare Occupation : Business Owner - Student 
+Lower = 1.906443 Upper = 3.826654
+****************************
+
+
+
+
+Response Credit_Limit | Compare Occupation : Retired - Business Owner 
+Lower = -4.171895 Upper = -1.53133
+****************************
+
+
+
+
+Response Credit_Limit | Compare Occupation : Self-Employed - Business Owner 
+Lower = -2.757689 Upper = -0.5606059
+****************************
+
+
+
+
+Response Credit_Limit | Compare Occupation : Self-Employed - Student 
+Lower = 0.89332 Upper = 3.935043
+****************************
+
+
+
+
+Response Credit_Limit | Compare Occupation : Private Employee - Business Owner 
+Lower = -3.044718 Upper = -1.151071
+****************************
+
+
+
+
+Response Credit_Limit | Compare Occupation : Private Employee - Student 
+Lower = 0.560266 Upper = 3.390603
+****************************
+
+
+
+
+Response Credit_Limit | Compare Occupation : Government Employee - Business Owner 
+Lower = -2.807922 Upper = -0.5767734
+****************************
+
+
+
+
+Response Credit_Limit | Compare Occupation : Government Employee - Student 
+Lower = 0.8477716 Upper = 3.914191
+****************************
+
+
+
+
+Response Credit_Limit | Compare Occupation : Business Owner - Student 
+Lower = 2.552467 Upper = 5.594191
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Occupation : Retired - Self-Employed 
+Lower = -2.184823 Upper = -0.06064389
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Occupation : Retired - Government Employee 
+Lower = -2.178247 Upper = -0.03121284
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Occupation : Retired - Business Owner 
+Lower = -3.398396 Upper = -1.274217
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Occupation : Self-Employed - Business Owner 
+Lower = -2.097285 Upper = -0.3298614
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Occupation : Self-Employed - Student 
+Lower = 0.4750828 Upper = 2.92197
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Occupation : Private Employee - Business Owner 
+Lower = -2.395431 Upper = -0.8721036
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Occupation : Private Employee - Student 
+Lower = 0.1399126 Upper = 2.416752
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Occupation : Government Employee - Business Owner 
+Lower = -2.128991 Upper = -0.3341632
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Occupation : Government Employee - Student 
+Lower = 0.4471459 Upper = 2.9139
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Occupation : Business Owner - Student 
+Lower = 1.688656 Upper = 4.135544
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Occupation : Retired - Business Owner 
+Lower = -4.517661 Upper = -1.3044
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Occupation : Self-Employed - Business Owner 
+Lower = -3.216921 Upper = -0.5433258
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Occupation : Self-Employed - Student 
+Lower = 0.3650692 Upper = 4.066494
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Occupation : Private Employee - Business Owner 
+Lower = -3.379625 Upper = -1.075276
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Occupation : Private Employee - Student 
+Lower = 0.1463584 Upper = 3.590551
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Occupation : Government Employee - Business Owner 
+Lower = -3.340199 Upper = -0.6251503
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Occupation : Government Employee - Student 
+Lower = 0.2474917 Upper = 3.978969
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Occupation : Business Owner - Student 
+Lower = 2.245193 Upper = 5.946618
+****************************
+
+
+
+
+Response Payment_Amount | Compare Occupation : Retired - Business Owner 
+Lower = -4.285155 Upper = -1.256125
+****************************
+
+
+
+
+Response Payment_Amount | Compare Occupation : Self-Employed - Business Owner 
+Lower = -3.07402 Upper = -0.5537146
+****************************
+
+
+
+
+Response Payment_Amount | Compare Occupation : Self-Employed - Student 
+Lower = 0.1969967 Upper = 3.686202
+****************************
+
+
+
+
+Response Payment_Amount | Compare Occupation : Private Employee - Business Owner 
+Lower = -3.433654 Upper = -1.261423
+****************************
+
+
+
+
+Response Payment_Amount | Compare Occupation : Government Employee - Business Owner 
+Lower = -3.104184 Upper = -0.5448019
+****************************
+
+
+
+
+Response Payment_Amount | Compare Occupation : Government Employee - Student 
+Lower = 0.1722062 Upper = 3.689741
+****************************
+
+
+
+
+Response Payment_Amount | Compare Occupation : Business Owner - Student 
+Lower = 2.010864 Upper = 5.500069
+****************************
+
+
+
+
+Response Annual_Income | Compare Card_Type : Gold - Basic 
+Lower = 0.9154306 Upper = 1.692657
+****************************
+
+
+
+
+Response Annual_Income | Compare Card_Type : Gold - Silver 
+Lower = 0.3022129 Upper = 1.173499
+****************************
+
+
+
+
+Response Annual_Income | Compare Card_Type : Gold - Signature 
+Lower = -1.800685 Upper = -0.7098799
+****************************
+
+
+
+
+Response Annual_Income | Compare Card_Type : Platinum - Basic 
+Lower = 1.240526 Upper = 2.114052
+****************************
+
+
+
+
+Response Annual_Income | Compare Card_Type : Platinum - Silver 
+Lower = 0.6320115 Upper = 1.590191
+****************************
+
+
+
+
+Response Annual_Income | Compare Card_Type : Platinum - Signature 
+Lower = -1.462732 Upper = -0.3013427
+****************************
+
+
+
+
+Response Annual_Income | Compare Card_Type : Basic - Silver 
+Lower = -1.017313 Upper = -0.1150629
+****************************
+
+
+
+
+Response Annual_Income | Compare Card_Type : Basic - Signature 
+Lower = -3.117173 Upper = -2.001479
+****************************
+
+
+
+
+Response Annual_Income | Compare Card_Type : Silver - Signature 
+Lower = -2.58471 Upper = -1.401566
+****************************
+
+
+
+
+Response Credit_Limit | Compare Card_Type : Gold - Platinum 
+Lower = -1.148264 Upper = -0.2871752
+****************************
+
+
+
+
+Response Credit_Limit | Compare Card_Type : Gold - Basic 
+Lower = 1.706983 Upper = 2.502296
+****************************
+
+
+
+
+Response Credit_Limit | Compare Card_Type : Gold - Silver 
+Lower = 0.6316163 Upper = 1.523178
+****************************
+
+
+
+
+Response Credit_Limit | Compare Card_Type : Gold - Signature 
+Lower = -2.426329 Upper = -1.31014
+****************************
+
+
+
+
+Response Credit_Limit | Compare Card_Type : Platinum - Basic 
+Lower = 2.375432 Upper = 3.269287
+****************************
+
+
+
+
+Response Credit_Limit | Compare Card_Type : Platinum - Silver 
+Lower = 1.304878 Upper = 2.285355
+****************************
+
+
+
+
+Response Credit_Limit | Compare Card_Type : Platinum - Signature 
+Lower = -1.744723 Upper = -0.556307
+****************************
+
+
+
+
+Response Credit_Limit | Compare Card_Type : Basic - Silver 
+Lower = -1.488866 Upper = -0.5656196
+****************************
+
+
+
+
+Response Credit_Limit | Compare Card_Type : Basic - Signature 
+Lower = -4.543703 Upper = -3.402046
+****************************
+
+
+
+
+Response Credit_Limit | Compare Card_Type : Silver - Signature 
+Lower = -3.55097 Upper = -2.340293
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Card_Type : Gold - Platinum 
+Lower = -1.064123 Upper = -0.05020472
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Card_Type : Gold - Basic 
+Lower = 0.9878807 Upper = 1.924349
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Card_Type : Gold - Silver 
+Lower = 0.3325258 Upper = 1.382325
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Card_Type : Gold - Signature 
+Lower = -2.067398 Upper = -0.7531031
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Card_Type : Platinum - Basic 
+Lower = 1.487029 Upper = 2.539529
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Card_Type : Platinum - Silver 
+Lower = 0.8373413 Upper = 1.991837
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Card_Type : Platinum - Signature 
+Lower = -1.552757 Upper = -0.1534165
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Card_Type : Basic - Silver 
+Lower = -1.142243 Upper = -0.05513572
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Card_Type : Basic - Signature 
+Lower = -3.538507 Upper = -2.194224
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Card_Type : Silver - Signature 
+Lower = -2.980452 Upper = -1.554899
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Card_Type : Gold - Platinum 
+Lower = -1.465691 Upper = -0.06992549
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Card_Type : Gold - Basic 
+Lower = 1.471712 Upper = 2.76086
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Card_Type : Gold - Silver 
+Lower = 0.1194745 Upper = 1.564634
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Card_Type : Gold - Signature 
+Lower = -3.080909 Upper = -1.271643
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Card_Type : Platinum - Basic 
+Lower = 2.159656 Upper = 3.608533
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Card_Type : Platinum - Silver 
+Lower = 0.81522 Upper = 2.404506
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Card_Type : Platinum - Signature 
+Lower = -2.371638 Upper = -0.4452975
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Card_Type : Basic - Silver 
+Lower = -2.022491 Upper = -0.5259724
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Card_Type : Basic - Signature 
+Lower = -5.217836 Upper = -3.367288
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Card_Type : Silver - Signature 
+Lower = -3.999543 Upper = -2.037118
+****************************
+
+
+
+
+Response Payment_Amount | Compare Card_Type : Gold - Platinum 
+Lower = -1.526524 Upper = -0.1461675
+****************************
+
+
+
+
+Response Payment_Amount | Compare Card_Type : Gold - Basic 
+Lower = 1.255915 Upper = 2.530831
+****************************
+
+
+
+
+Response Payment_Amount | Compare Card_Type : Gold - Silver 
+Lower = 0.08369868 Upper = 1.512904
+****************************
+
+
+
+
+Response Payment_Amount | Compare Card_Type : Gold - Signature 
+Lower = -3.044608 Upper = -1.255316
+****************************
+
+
+
+
+Response Payment_Amount | Compare Card_Type : Platinum - Basic 
+Lower = 2.013278 Upper = 3.44616
+****************************
+
+
+
+
+Response Payment_Amount | Compare Card_Type : Platinum - Silver 
+Lower = 0.8487772 Upper = 2.420518
+****************************
+
+
+
+
+Response Payment_Amount | Compare Card_Type : Platinum - Signature 
+Lower = -2.266153 Upper = -0.3610792
+****************************
+
+
+
+
+Response Payment_Amount | Compare Card_Type : Basic - Silver 
+Lower = -1.83507 Upper = -0.3550727
+****************************
+
+
+
+
+Response Payment_Amount | Compare Card_Type : Basic - Signature 
+Lower = -4.958394 Upper = -3.128276
+****************************
+
+
+
+
+Response Payment_Amount | Compare Card_Type : Silver - Signature 
+Lower = -3.918643 Upper = -1.977884
+****************************
+
+
+
+
+Response Age | Compare Gender : F - M 
+Lower = 0.02386123 Upper = 0.2449329
+****************************
+
+
+
+
+Response Age | Compare Occupation : Retired - Business Owner 
+Lower = 0.0003849522 Upper = 0.442451
+****************************
+
+
+
+
+Response Age | Compare Occupation : Retired - Student 
+Lower = 0.1005797 Upper = 0.6657703
+****************************
+
+
+
+
+Response Age | Compare Occupation : Self-Employed - Student 
+Lower = 0.07654482 Upper = 0.5857702
+****************************
+
+
+
+
+Response Age | Compare Occupation : Private Employee - Business Owner 
+Lower = 0.06315795 Upper = 0.38018
+****************************
+
+
+
+
+Response Age | Compare Occupation : Private Employee - Student 
+Lower = 0.1465077 Upper = 0.6203442
+****************************
+
+
+
+
+Response Age | Compare Occupation : Government Employee - Student 
+Lower = 0.02056988 Upper = 0.5339298
+****************************
+
+
+
+
+Response Annual_Income | Compare Occupation : Retired - Self-Employed 
+Lower = -1.224322 Upper = -0.3199492
+****************************
+
+
+
+
+Response Annual_Income | Compare Occupation : Retired - Private Employee 
+Lower = -0.835239 Upper = -0.01530766
+****************************
+
+
+
+
+Response Annual_Income | Compare Occupation : Retired - Government Employee 
+Lower = -1.171251 Upper = -0.2571476
+****************************
+
+
+
+
+Response Annual_Income | Compare Occupation : Retired - Business Owner 
+Lower = -2.363205 Upper = -1.458832
+****************************
+
+
+
+
+Response Annual_Income | Compare Occupation : Retired - Student 
+Lower = 0.3774005 Upper = 1.53366
+****************************
+
+
+
+
+Response Annual_Income | Compare Occupation : Self-Employed - Private Employee 
+Lower = 0.02258255 Upper = 0.6711417
+****************************
+
+
+
+
+Response Annual_Income | Compare Occupation : Self-Employed - Business Owner 
+Lower = -1.515125 Upper = -0.7626412
+****************************
+
+
+
+
+Response Annual_Income | Compare Occupation : Self-Employed - Student 
+Lower = 1.206782 Upper = 2.248549
+****************************
+
+
+
+
+Response Annual_Income | Compare Occupation : Private Employee - Business Owner 
+Lower = -1.810025 Upper = -1.161465
+****************************
+
+
+
+
+Response Annual_Income | Compare Occupation : Private Employee - Student 
+Lower = 0.8961194 Upper = 1.865487
+****************************
+
+
+
+
+Response Annual_Income | Compare Occupation : Government Employee - Business Owner 
+Lower = -1.578895 Upper = -0.8147439
+****************************
+
+
+
+
+Response Annual_Income | Compare Occupation : Government Employee - Student 
+Lower = 1.144617 Upper = 2.194842
+****************************
+
+
+
+
+Response Annual_Income | Compare Occupation : Business Owner - Student 
+Lower = 2.345665 Upper = 3.387432
+****************************
+
+
+
+
+Response Credit_Limit | Compare Occupation : Retired - Self-Employed 
+Lower = -1.908754 Upper = -0.4761768
+****************************
+
+
+
+
+Response Credit_Limit | Compare Occupation : Retired - Private Employee 
+Lower = -1.403127 Upper = -0.1043095
+****************************
+
+
+
+
+Response Credit_Limit | Compare Occupation : Retired - Government Employee 
+Lower = -1.883261 Upper = -0.4352697
+****************************
+
+
+
+
+Response Credit_Limit | Compare Occupation : Retired - Business Owner 
+Lower = -3.567902 Upper = -2.135324
+****************************
+
+
+
+
+Response Credit_Limit | Compare Occupation : Retired - Student 
+Lower = 0.305926 Upper = 2.137506
+****************************
+
+
+
+
+Response Credit_Limit | Compare Occupation : Self-Employed - Business Owner 
+Lower = -2.255136 Upper = -1.063159
+****************************
+
+
+
+
+Response Credit_Limit | Compare Occupation : Self-Employed - Student 
+Lower = 1.589073 Upper = 3.23929
+****************************
+
+
+
+
+Response Credit_Limit | Compare Occupation : Private Employee - Business Owner 
+Lower = -2.611572 Upper = -1.584217
+****************************
+
+
+
+
+Response Credit_Limit | Compare Occupation : Private Employee - Student 
+Lower = 1.207667 Upper = 2.743202
+****************************
+
+
+
+
+Response Credit_Limit | Compare Occupation : Government Employee - Business Owner 
+Lower = -2.297576 Upper = -1.087118
+****************************
+
+
+
+
+Response Credit_Limit | Compare Occupation : Government Employee - Student 
+Lower = 1.549174 Upper = 3.212789
+****************************
+
+
+
+
+Response Credit_Limit | Compare Occupation : Business Owner - Student 
+Lower = 3.248221 Upper = 4.898437
+****************************
+
+
+
+
+Response Card_Age_Months | Compare Occupation : Private Employee - Business Owner 
+Lower = 0.04798645 Upper = 0.727065
+****************************
+
+
+
+
+Response Card_Age_Months | Compare Occupation : Government Employee - Business Owner 
+Lower = 0.1528237 Upper = 0.9529331
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Occupation : Retired - Self-Employed 
+Lower = -1.698946 Upper = -0.5465212
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Occupation : Retired - Private Employee 
+Lower = -1.224951 Upper = -0.180128
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Occupation : Retired - Government Employee 
+Lower = -1.687142 Upper = -0.522318
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Occupation : Retired - Business Owner 
+Lower = -2.912519 Upper = -1.760095
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Occupation : Self-Employed - Private Employee 
+Lower = 0.006970926 Upper = 0.8334173
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Occupation : Self-Employed - Business Owner 
+Lower = -1.693011 Upper = -0.7341358
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Occupation : Self-Employed - Student 
+Lower = 1.034775 Upper = 2.362278
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Occupation : Private Employee - Business Owner 
+Lower = -2.046991 Upper = -1.220544
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Occupation : Private Employee - Student 
+Lower = 0.660709 Upper = 1.895956
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Occupation : Government Employee - Business Owner 
+Lower = -1.718448 Upper = -0.7447058
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Occupation : Government Employee - Student 
+Lower = 1.011383 Upper = 2.349663
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Occupation : Business Owner - Student 
+Lower = 2.248349 Upper = 3.575851
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Occupation : Retired - Self-Employed 
+Lower = -1.902547 Upper = -0.1592664
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Occupation : Retired - Government Employee 
+Lower = -1.809374 Upper = -0.04733681
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Occupation : Retired - Business Owner 
+Lower = -3.782671 Upper = -2.03939
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Occupation : Retired - Student 
+Lower = 0.07046434 Upper = 2.299285
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Occupation : Self-Employed - Business Owner 
+Lower = -2.605372 Upper = -1.154875
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Occupation : Self-Employed - Student 
+Lower = 1.21172 Upper = 3.219843
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Occupation : Private Employee - Business Owner 
+Lower = -2.852536 Upper = -1.602365
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Occupation : Private Employee - Student 
+Lower = 0.934171 Upper = 2.802738
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Occupation : Government Employee - Business Owner 
+Lower = -2.719168 Upper = -1.246181
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Occupation : Government Employee - Student 
+Lower = 1.101017 Upper = 3.125444
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Occupation : Business Owner - Student 
+Lower = 3.091844 Upper = 5.099966
+****************************
+
+
+
+
+Response Payment_Amount | Compare Occupation : Retired - Self-Employed 
+Lower = -1.778438 Upper = -0.1351076
+****************************
+
+
+
+
+Response Payment_Amount | Compare Occupation : Retired - Government Employee 
+Lower = -1.776653 Upper = -0.1156413
+****************************
+
+
+
+
+Response Payment_Amount | Compare Occupation : Retired - Business Owner 
+Lower = -3.592305 Upper = -1.948975
+****************************
+
+
+
+
+Response Payment_Amount | Compare Occupation : Self-Employed - Business Owner 
+Lower = -2.497534 Upper = -1.1302
+****************************
+
+
+
+
+Response Payment_Amount | Compare Occupation : Self-Employed - Student 
+Lower = 0.9951053 Upper = 2.888093
+****************************
+
+
+
+
+Response Payment_Amount | Compare Occupation : Private Employee - Business Owner 
+Lower = -2.936785 Upper = -1.758292
+****************************
+
+
+
+
+Response Payment_Amount | Compare Occupation : Private Employee - Student 
+Lower = 0.5272112 Upper = 2.288645
+****************************
+
+
+
+
+Response Payment_Amount | Compare Occupation : Government Employee - Business Owner 
+Lower = -2.51876 Upper = -1.130226
+****************************
+
+
+
+
+Response Payment_Amount | Compare Occupation : Government Employee - Student 
+Lower = 0.9767948 Upper = 2.885152
+****************************
+
+
+
+
+Response Payment_Amount | Compare Occupation : Business Owner - Student 
+Lower = 2.808973 Upper = 4.70196
+****************************
+
+
+
+
+Response Credit_Score | Compare Occupation : Private Employee - Government Employee 
+Lower = -0.1309518 Upper = -0.01134817
+****************************
+
+
+
+
+Response Age | Compare Card_Type : Gold - Signature 
+Lower = 0.03265593 Upper = 0.4542851
+****************************
+
+
+
+
+Response Age | Compare Card_Type : Silver - Signature 
+Lower = 0.07262769 Upper = 0.5299487
+****************************
+
+
+
+
+Response Annual_Income | Compare Card_Type : Gold - Platinum 
+Lower = -0.6093141 Upper = -0.1371765
+****************************
+
+
+
+
+Response Annual_Income | Compare Card_Type : Gold - Basic 
+Lower = 1.086007 Upper = 1.52208
+****************************
+
+
+
+
+Response Annual_Income | Compare Card_Type : Gold - Silver 
+Lower = 0.4934329 Upper = 0.9822787
+****************************
+
+
+
+
+Response Annual_Income | Compare Card_Type : Gold - Signature 
+Lower = -1.561287 Upper = -0.9492775
+****************************
+
+
+
+
+Response Annual_Income | Compare Card_Type : Platinum - Basic 
+Lower = 1.432237 Upper = 1.922341
+****************************
+
+
+
+
+Response Annual_Income | Compare Card_Type : Platinum - Silver 
+Lower = 0.8423019 Upper = 1.3799
+****************************
+
+
+
+
+Response Annual_Income | Compare Card_Type : Platinum - Signature 
+Lower = -1.207843 Upper = -0.5562312
+****************************
+
+
+
+
+Response Annual_Income | Compare Card_Type : Basic - Silver 
+Lower = -0.8192973 Upper = -0.3130786
+****************************
+
+
+
+
+Response Annual_Income | Compare Card_Type : Basic - Signature 
+Lower = -2.872313 Upper = -2.246339
+****************************
+
+
+
+
+Response Annual_Income | Compare Card_Type : Silver - Signature 
+Lower = -2.325047 Upper = -1.661229
+****************************
+
+
+
+
+Response Credit_Limit | Compare Card_Type : Gold - Platinum 
+Lower = -0.9592821 Upper = -0.4761573
+****************************
+
+
+
+
+Response Credit_Limit | Compare Card_Type : Gold - Basic 
+Lower = 1.88153 Upper = 2.32775
+****************************
+
+
+
+
+Response Credit_Limit | Compare Card_Type : Gold - Silver 
+Lower = 0.8272861 Upper = 1.327508
+****************************
+
+
+
+
+Response Credit_Limit | Compare Card_Type : Gold - Signature 
+Lower = -2.18136 Upper = -1.555109
+****************************
+
+
+
+
+Response Credit_Limit | Compare Card_Type : Platinum - Basic 
+Lower = 2.571605 Upper = 3.073114
+****************************
+
+
+
+
+Response Credit_Limit | Compare Card_Type : Platinum - Silver 
+Lower = 1.520062 Upper = 2.070171
+****************************
+
+
+
+
+Response Credit_Limit | Compare Card_Type : Platinum - Signature 
+Lower = -1.483903 Upper = -0.8171271
+****************************
+
+
+
+
+Response Credit_Limit | Compare Card_Type : Basic - Silver 
+Lower = -1.286242 Upper = -0.7682433
+****************************
+
+
+
+
+Response Credit_Limit | Compare Card_Type : Basic - Signature 
+Lower = -4.293145 Upper = -3.652604
+****************************
+
+
+
+
+Response Credit_Limit | Compare Card_Type : Silver - Signature 
+Lower = -3.285264 Upper = -2.605999
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Card_Type : Gold - Platinum 
+Lower = -0.8415997 Upper = -0.2727281
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Card_Type : Gold - Basic 
+Lower = 1.193406 Upper = 1.718823
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Card_Type : Gold - Silver 
+Lower = 0.5629239 Upper = 1.151927
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Card_Type : Gold - Signature 
+Lower = -1.778951 Upper = -1.04155
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Card_Type : Platinum - Basic 
+Lower = 1.71802 Upper = 2.308538
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Card_Type : Platinum - Silver 
+Lower = 1.090717 Upper = 1.738461
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Card_Type : Platinum - Signature 
+Lower = -1.245645 Upper = -0.460528
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Card_Type : Basic - Silver 
+Lower = -0.9036572 Upper = -0.2937219
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Card_Type : Basic - Signature 
+Lower = -3.243479 Upper = -2.489252
+****************************
+
+
+
+
+Response Monthly_Spending | Compare Card_Type : Silver - Signature 
+Lower = -2.667588 Upper = -1.867764
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Card_Type : Gold - Platinum 
+Lower = -1.159364 Upper = -0.3762525
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Card_Type : Gold - Basic 
+Lower = 1.75464 Upper = 2.477932
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Card_Type : Gold - Silver 
+Lower = 0.4366419 Upper = 1.247467
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Card_Type : Gold - Signature 
+Lower = -2.683832 Upper = -1.66872
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Card_Type : Platinum - Basic 
+Lower = 2.477639 Upper = 3.29055
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Card_Type : Platinum - Silver 
+Lower = 1.164019 Upper = 2.055707
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Card_Type : Platinum - Signature 
+Lower = -1.948866 Upper = -0.8680689
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Card_Type : Basic - Silver 
+Lower = -1.694052 Upper = -0.8544115
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Card_Type : Basic - Signature 
+Lower = -4.811698 Upper = -3.773426
+****************************
+
+
+
+
+Response Outstanding_Balance | Compare Card_Type : Silver - Signature 
+Lower = -3.568852 Upper = -2.467809
+****************************
+
+
+
+
+Response Payment_Amount | Compare Card_Type : Gold - Platinum 
+Lower = -1.223579 Upper = -0.4491127
+****************************
+
+
+
+
+Response Payment_Amount | Compare Card_Type : Gold - Basic 
+Lower = 1.535719 Upper = 2.251027
+****************************
+
+
+
+
+Response Payment_Amount | Compare Card_Type : Gold - Silver 
+Lower = 0.3973646 Upper = 1.199238
+****************************
+
+
+
+
+Response Payment_Amount | Compare Card_Type : Gold - Signature 
+Lower = -2.651914 Upper = -1.64801
+****************************
+
+
+
+
+Response Payment_Amount | Compare Card_Type : Platinum - Basic 
+Lower = 2.327751 Upper = 3.131687
+****************************
+
+
+
+
+Response Payment_Amount | Compare Card_Type : Platinum - Silver 
+Lower = 1.193725 Upper = 2.07557
+****************************
+
+
+
+
+Response Payment_Amount | Compare Card_Type : Platinum - Signature 
+Lower = -1.848049 Upper = -0.7791834
+****************************
+
+
+
+
+Response Payment_Amount | Compare Card_Type : Basic - Silver 
+Lower = -1.510257 Upper = -0.6798859
+****************************
+
+
+
+
+Response Payment_Amount | Compare Card_Type : Basic - Signature 
+Lower = -4.55674 Upper = -3.52993
+****************************
+
+
+
+
+Response Payment_Amount | Compare Card_Type : Silver - Signature 
+Lower = -3.492707 Upper = -2.40382
+****************************
+
+
+
+

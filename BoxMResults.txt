@@ -1,0 +1,320 @@
+Box M Test for: Gender
+ p-value = 0.7661761
+
+
+
+
+Box M Test for: Occupation
+ p-value = NaN
+
+
+
+
+Box M Test for: Card_Type
+ p-value = 0.1056871
+
+
+
+
+Box M Test for: Gender
+ p-value = 0.7661761
+
+
+
+
+Box M Test for: Occupation
+ p-value = NaN
+
+
+
+
+Box M Test for: Card_Type
+ p-value = 0.1056871
+
+
+
+
+                        Df   Wilks approx F num Df den Df    Pr(>F)    
+Occupation               5 0.03523   6287.8     40 217830 < 2.2e-16 ***
+Card_Type                4 0.03200   8886.8     32 184293 < 2.2e-16 ***
+Occupation:Card_Type    10 0.92595     48.4     80 316959 < 2.2e-16 ***
+Residuals            49980                                             
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+                        Df Hotelling-Lawley approx F num Df den Df    Pr(>F)
+Occupation               5          26.9973    33727     40 249857 < 2.2e-16
+Card_Type                4          29.9888    46831     32 199886 < 2.2e-16
+Occupation:Card_Type    10           0.0799       50     80 399770 < 2.2e-16
+Residuals            49980                                                  
+                        
+Occupation           ***
+Card_Type            ***
+Occupation:Card_Type ***
+Residuals               
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+                        Df     Roy approx F num Df den Df    Pr(>F)    
+Occupation               5 26.9828   168565      8  49977 < 2.2e-16 ***
+Card_Type                4 29.9800   187285      8  49976 < 2.2e-16 ***
+Occupation:Card_Type    10  0.0786      393     10  49980 < 2.2e-16 ***
+Residuals            49980                                             
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+                        Df  Pillai approx F num Df den Df    Pr(>F)    
+Occupation               5 0.97854  1520.12     40 249885 < 2.2e-16 ***
+Card_Type                4 0.97646  2017.47     32 199904 < 2.2e-16 ***
+Occupation:Card_Type    10 0.07415    46.76     80 399840 < 2.2e-16 ***
+Residuals            49980                                             
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Card_Type
+ANOVA Results for: Age
+            Df Sum Sq Mean Sq F value Pr(>F)  
+Card_Type    4  0.633 0.15829   2.028 0.0967 .
+Residuals   95  7.416 0.07807                 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Annual_Income
+            Df Sum Sq Mean Sq F value Pr(>F)    
+Card_Type    4  61.44  15.360   93.38 <2e-16 ***
+Residuals   95  15.63   0.164                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Credit_Limit
+            Df Sum Sq Mean Sq F value Pr(>F)    
+Card_Type    4 155.28   38.82   225.4 <2e-16 ***
+Residuals   95  16.36    0.17                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Card_Age_Months
+            Df Sum Sq Mean Sq F value Pr(>F)
+Card_Type    4   1.23  0.3084   0.882  0.478
+Residuals   95  33.23  0.3498               
+ANOVA Results for: Monthly_Spending
+            Df Sum Sq Mean Sq F value Pr(>F)    
+Card_Type    4  81.63  20.407   85.46 <2e-16 ***
+Residuals   95  22.69   0.239                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Outstanding_Balance
+            Df Sum Sq Mean Sq F value Pr(>F)    
+Card_Type    4 166.93   41.73   92.22 <2e-16 ***
+Residuals   95  42.99    0.45                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Payment_Amount
+            Df Sum Sq Mean Sq F value Pr(>F)    
+Card_Type    4 148.76   37.19   84.03 <2e-16 ***
+Residuals   95  42.05    0.44                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Credit_Score
+            Df Sum Sq  Mean Sq F value Pr(>F)
+Card_Type    4 0.0207 0.005177     0.5  0.736
+Residuals   95 0.9844 0.010362               
+********************************************************
+
+
+
+
+MANOVA Results for: Gender
+
+
+          Df   Wilks approx F num Df den Df Pr(>F)
+Gender     1 0.89678   1.3093      8     91 0.2489
+Residuals 98                                      
+          Df Hotelling-Lawley approx F num Df den Df Pr(>F)
+Gender     1           0.1151   1.3093      8     91 0.2489
+Residuals 98                                               
+          Df    Roy approx F num Df den Df Pr(>F)
+Gender     1 0.1151   1.3093      8     91 0.2489
+Residuals 98                                     
+          Df  Pillai approx F num Df den Df Pr(>F)
+Gender     1 0.10322   1.3093      8     91 0.2489
+Residuals 98                                      
+ANOVA Results for: Gender
+ANOVA Results for: Age
+            Df Sum Sq Mean Sq F value Pr(>F)  
+Gender       1  0.451  0.4514   5.822 0.0177 *
+Residuals   98  7.598  0.0775                 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Annual_Income
+            Df Sum Sq Mean Sq F value Pr(>F)
+Gender       1   0.73  0.7341   0.942  0.334
+Residuals   98  76.33  0.7789               
+ANOVA Results for: Credit_Limit
+            Df Sum Sq Mean Sq F value Pr(>F)
+Gender       1    1.4   1.403   0.807  0.371
+Residuals   98  170.2   1.737               
+ANOVA Results for: Card_Age_Months
+            Df Sum Sq Mean Sq F value Pr(>F)
+Gender       1   0.38  0.3803   1.093  0.298
+Residuals   98  34.09  0.3478               
+ANOVA Results for: Monthly_Spending
+            Df Sum Sq Mean Sq F value Pr(>F)
+Gender       1   0.74  0.7394     0.7  0.405
+Residuals   98 103.57  1.0569               
+ANOVA Results for: Outstanding_Balance
+            Df Sum Sq Mean Sq F value Pr(>F)
+Gender       1   2.51   2.514   1.188  0.278
+Residuals   98 207.40   2.116               
+ANOVA Results for: Payment_Amount
+            Df Sum Sq Mean Sq F value Pr(>F)
+Gender       1   1.14   1.139   0.589  0.445
+Residuals   98 189.67   1.935               
+ANOVA Results for: Credit_Score
+            Df Sum Sq  Mean Sq F value Pr(>F)
+Gender       1 0.0034 0.003392   0.332  0.566
+Residuals   98 1.0017 0.010222               
+********************************************************
+
+
+
+
+MANOVA Results for: Occupation
+
+
+           Df   Wilks approx F num Df den Df    Pr(>F)    
+Occupation  5 0.19882   4.2842     40 382.02 2.314e-14 ***
+Residuals  94                                             
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+           Df Hotelling-Lawley approx F num Df den Df    Pr(>F)    
+Occupation  5           2.6222   5.5983     40    427 < 2.2e-16 ***
+Residuals  94                                                      
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+           Df    Roy approx F num Df den Df    Pr(>F)    
+Occupation  5 2.0857   23.725      8     91 < 2.2e-16 ***
+Residuals  94                                            
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+           Df Pillai approx F num Df den Df    Pr(>F)    
+Occupation  5  1.123   3.2948     40    455 5.467e-10 ***
+Residuals  94                                            
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Occupation
+ANOVA Results for: Age
+            Df Sum Sq Mean Sq F value  Pr(>F)   
+Occupation   5  1.195 0.23891   3.276 0.00902 **
+Residuals   94  6.855 0.07293                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Annual_Income
+            Df Sum Sq Mean Sq F value Pr(>F)    
+Occupation   5  48.37   9.675    31.7 <2e-16 ***
+Residuals   94  28.69   0.305                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Credit_Limit
+            Df Sum Sq Mean Sq F value Pr(>F)    
+Occupation   5  99.66  19.931   26.02 <2e-16 ***
+Residuals   94  71.99   0.766                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Card_Age_Months
+            Df Sum Sq Mean Sq F value Pr(>F)
+Occupation   5  3.012  0.6025   1.801   0.12
+Residuals   94 31.454  0.3346               
+ANOVA Results for: Monthly_Spending
+            Df Sum Sq Mean Sq F value   Pr(>F)    
+Occupation   5  57.73  11.545    23.3 3.74e-15 ***
+Residuals   94  46.59   0.496                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Outstanding_Balance
+            Df Sum Sq Mean Sq F value   Pr(>F)    
+Occupation   5  103.3  20.662   18.22 1.33e-12 ***
+Residuals   94  106.6   1.134                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Payment_Amount
+            Df Sum Sq Mean Sq F value   Pr(>F)    
+Occupation   5  96.08  19.215   19.07 4.73e-13 ***
+Residuals   94  94.73   1.008                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Credit_Score
+            Df Sum Sq  Mean Sq F value Pr(>F)
+Occupation   5 0.0688 0.013756   1.381  0.238
+Residuals   94 0.9363 0.009961               
+********************************************************
+
+
+
+
+MANOVA Results for: Card_Type
+
+
+          Df     Wilks approx F num Df den Df    Pr(>F)    
+Card_Type  4 0.0090501    26.31     32 326.12 < 2.2e-16 ***
+Residuals 95                                               
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+          Df Hotelling-Lawley approx F num Df den Df    Pr(>F)    
+Card_Type  4           82.042   221.77     32    346 < 2.2e-16 ***
+Residuals 95                                                      
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+          Df   Roy approx F num Df den Df    Pr(>F)    
+Card_Type  4 81.73   929.67      8     91 < 2.2e-16 ***
+Residuals 95                                           
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+          Df Pillai approx F num Df den Df    Pr(>F)    
+Card_Type  4 1.2571   5.2134     32    364 6.104e-16 ***
+Residuals 95                                            
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Card_Type
+ANOVA Results for: Age
+            Df Sum Sq Mean Sq F value Pr(>F)  
+Card_Type    4  0.633 0.15829   2.028 0.0967 .
+Residuals   95  7.416 0.07807                 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Annual_Income
+            Df Sum Sq Mean Sq F value Pr(>F)    
+Card_Type    4  61.44  15.360   93.38 <2e-16 ***
+Residuals   95  15.63   0.164                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Credit_Limit
+            Df Sum Sq Mean Sq F value Pr(>F)    
+Card_Type    4 155.28   38.82   225.4 <2e-16 ***
+Residuals   95  16.36    0.17                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Card_Age_Months
+            Df Sum Sq Mean Sq F value Pr(>F)
+Card_Type    4   1.23  0.3084   0.882  0.478
+Residuals   95  33.23  0.3498               
+ANOVA Results for: Monthly_Spending
+            Df Sum Sq Mean Sq F value Pr(>F)    
+Card_Type    4  81.63  20.407   85.46 <2e-16 ***
+Residuals   95  22.69   0.239                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Outstanding_Balance
+            Df Sum Sq Mean Sq F value Pr(>F)    
+Card_Type    4 166.93   41.73   92.22 <2e-16 ***
+Residuals   95  42.99    0.45                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Payment_Amount
+            Df Sum Sq Mean Sq F value Pr(>F)    
+Card_Type    4 148.76   37.19   84.03 <2e-16 ***
+Residuals   95  42.05    0.44                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+ANOVA Results for: Credit_Score
+            Df Sum Sq  Mean Sq F value Pr(>F)
+Card_Type    4 0.0207 0.005177     0.5  0.736
+Residuals   95 0.9844 0.010362               
+********************************************************
+
+
+
+
