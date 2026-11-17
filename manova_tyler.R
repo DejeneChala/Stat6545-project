@@ -61,22 +61,26 @@ BoxM.Test=function(Cov,Spool,Ns){
   pval=pchisq(C,df,lower.tail = F)
   return(pval)
 }
+
+
+#Reset the output directory to prevent clogging up the GitHub repository with large output files.
+setwd(r"(C:\Users\tjgfx9\OneDrive - University of Missouri\Masters\Stat 6545\Project\Results)")
+
+
+
+#Set Up for MANOVA
 #Keep only these variables for MANOVA.
 card_kept=
   subset(credit_data,select=c(Age,Gender,Occupation,Card_Type,Annual_Income,
                     Credit_Limit,Monthly_Spending,Outstanding_Balance,
                     Payment_Amount,Credit_Score,Card_Age_Months)
 )
-
-#Reset the output directory to prevent clogging up the GitHub repository with large output files.
-setwd(r"(C:\Users\tjgfx9\OneDrive - University of Missouri\Masters\Stat 6545\Project\Results)")
-#Set Up for MANOVA
 CatVars=c('Gender','Occupation','Card_Type')
 NumVars=c('Age','Annual_Income','Credit_Limit','Card_Age_Months','Monthly_Spending',
           'Outstanding_Balance','Payment_Amount','Credit_Score'
 )
 set.seed(42)
-Chosen=sample(1:nrow(card_kept),100)    #Start with a random sample of 100 rows
+Chosen=sample(1:nrow(card_kept),1000)    #Start with a random sample of 1000 rows
 card_kept_chosen=card_kept[Chosen,]    #Here is Chosen Line
 #Keep only the numeric and categorical variables in separate matrices.
 card_kept_chosen_nums=(card_kept_chosen %>%
@@ -91,20 +95,62 @@ card_kept_chosen_cats=(card_kept_chosen %>%
 card_kept_chosen_nums=log1p(card_kept_chosen_nums)   
 card_kept_chosen_nums=as.data.frame(card_kept_chosen_nums)
 log_sub_card_kept=cbind(card_kept_chosen_nums,card_kept_chosen_cats)
-#Do Box's M Test to see if the covariance matrices are equal across groups for each categorical variable.
 
-sink('BoxMResults.txt',split=TRUE)
+
+
+#Do Box's M Test on a subset to see if the covariance matrices are equal across groups for each categorical variable.
+sink('BoxMResultsSmall.txt',split=TRUE)
+cat('This is a BoxM Test on a randomly selected sample of',length(Chosen),'rows from the original data set.')
 for (i in 1:length(CatVars)){
   credit_test=Split.Cov(log_sub_card_kept,CatVars[i],NumVars)
   Cov=credit_test$Cov
   Spool=credit_test$Spool
   Ns=credit_test$Ns
   pval=BoxM.Test(Cov,Spool,Ns)
+  cat('\n\n')
   cat('Box M Test for:',CatVars[i])
   cat('\n','p-value =',pval)
   cat('\n\n\n\n\n')
 }
 sink()
+
+
+
+
+#Now the BoxM for the full data set. This is done second as we need the full data set for below.
+card_kept_chosen=card_kept
+#Keep only the numeric and categorical variables in separate matrices.
+card_kept_chosen_nums=(card_kept_chosen %>%
+  select(all_of(NumVars)) %>%
+  as.matrix
+)
+card_kept_chosen_cats=(card_kept_chosen %>%
+  select(all_of(CatVars)) %>%
+  as.data.frame
+)
+#Log transform the numeric variables to reduce skewness. (Dejene confirmed)
+card_kept_chosen_nums=log1p(card_kept_chosen_nums)   
+card_kept_chosen_nums=as.data.frame(card_kept_chosen_nums)
+log_sub_card_kept=cbind(card_kept_chosen_nums,card_kept_chosen_cats)
+
+
+
+#Do Box's M Test to see if the covariance matrices are equal across groups for each categorical variable.
+sink('BoxMResultsBig.txt',split=TRUE)
+cat('This is a BoxM Test for the entire data set.')
+for (i in 1:length(CatVars)){
+  credit_test=Split.Cov(log_sub_card_kept,CatVars[i],NumVars)
+  Cov=credit_test$Cov
+  Spool=credit_test$Spool
+  Ns=credit_test$Ns
+  pval=BoxM.Test(Cov,Spool,Ns)
+  cat('\n\n')
+  cat('Box M Test for:',CatVars[i])
+  cat('\n','p-value =',pval)
+  cat('\n\n\n\n\n')
+}
+sink()
+
 
 #One Way MANOVA (and ANOVA)for each categorical variable.
 sink('OneWayMANOVAResults.txt',split=TRUE)
@@ -166,7 +212,6 @@ for (l in 1:length(CatVars)){
     }
   }
 }
-
 
 
 

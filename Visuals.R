@@ -57,4 +57,4 @@ p2=ggplot(data=card_kept,aes(x=Occupation,y=Monthly_Spending,fill=Occupation))+
   theme(axis.text.x = element_text(angle = 45,hjust=1))+
   labs(title='Boxplot of Monthly Spending by Occupation'
 )
-p1
+p1/p2
