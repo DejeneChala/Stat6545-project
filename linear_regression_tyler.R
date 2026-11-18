@@ -30,34 +30,36 @@ temp=t(Z01)%*%c_prod%*%Z01
 temp=c(temp)
 alpha=0.05
 conf=sqrt(m*(n-r-1)*qf(1-alpha,m,n-r-m)/(n-r-m))
-print("Confidence Intervals for the Mean")
-print(paste(z0=Z01))
+cat('*******************************','\n\n\n')
+cat("Confidence Intervals for the Mean\n")
+cat('z0=',Z01,'\n')
 for (i in 1:m){
     Lower=pred1[i]-conf*sqrt(temp*E[i,i]/(n-r-1))
     Upper=pred1[i]+conf*sqrt(temp*E[i,i]/(n-r-1))
-    print(paste("Response variable",colnames(pred1)[i]))
-    print(c(Lower,Upper))
+    cat("Response variable",colnames(pred1)[i],'\n')
+    cat(Lower,Upper,'\n')
 }
-print("Prediction Intervals for a new observation")
+cat('*******************************','\n\n\n')
+cat("Prediction Intervals for a new observation\n")
 for (i in 1:m){
     Lower=pred1[i]-conf*sqrt((1+temp)*E[i,i]/(n-r-1))
     Upper=pred1[i]+conf*sqrt((1+temp)*E[i,i]/(n-r-1))
-    print(paste("Response variable",colnames(pred1)[i]))
-    print(c(Lower,Upper))
+    cat("Response variable",colnames(pred1)[i],'\n')
+    cat(Lower,Upper,'\n')
 }
-
+cat('*******************************','\n\n\n')
 
 
 
 #Do a box cox transformation to see what to do? log1p??????
 pt1=powerTransform(Y1Full)
-pt1
+print(pt1)
 Y1Trans=bcPower(Y1,lambda=pt1$lambda)
 colnames(Y1Trans)=colnames(Y1)
 datT=data.frame(Y1Trans,X1)
 Y1TransFull=lm(cbind(Credit_Limit,Monthly_Spending)~.-Credit_Limit-Monthly_Spending,data=datT)
 summary(Y1TransFull)
-
+cat('*******************************','\n\n\n')
 Z01=datT[1,]
 pred1=predict(Y1TransFull,Z01)
 E=t(Y1TransFull$residuals)%*%Y1TransFull$residuals
@@ -71,21 +73,25 @@ temp=t(Z01)%*%c_prod%*%Z01
 temp=c(temp)
 alpha=0.05
 conf=sqrt(m*(n-r-1)*qf(1-alpha,m,n-r-m)/(n-r-m))
-print("Confidence Intervals for the Mean")
-print(paste(z0=Z01))
+cat('*******************************','\n\n\n')
+cat("Confidence Intervals for the Mean\n")
+cat('z0=',Z01,'\n')
 for (i in 1:m){
     Lower=pred1[i]-conf*sqrt(temp*E[i,i]/(n-r-1))
     Upper=pred1[i]+conf*sqrt(temp*E[i,i]/(n-r-1))
-    print(paste("Response variable",colnames(pred1)[i]))
-    print(c(Lower,Upper))
+    cat("Response variable",colnames(pred1)[i],'\n')
+    cat(Lower,Upper,'\n')
 }
-print("Prediction Intervals for a new observation")
+cat('*******************************','\n\n\n')
+cat("Prediction Intervals for a new observation\n")
 for (i in 1:m){
     Lower=pred1[i]-conf*sqrt((1+temp)*E[i,i]/(n-r-1))
     Upper=pred1[i]+conf*sqrt((1+temp)*E[i,i]/(n-r-1))
-    print(paste("Response variable",colnames(pred1)[i]))
-    print(c(Lower,Upper))
+    cat("Response variable",colnames(pred1)[i],'\n')
+    cat(Lower,Upper,'\n')
+    
 }
+cat('*******************************','\n\n\n')
 sink()
 
 
@@ -102,6 +108,7 @@ Y2Full=lm(cbind(Online_Shopping_Spending,Grocery_Spending,Fuel_Spending,
   -Travel_Spending-Entertainment_Spending-Utility_Bill_Spending,data=dat2
 )
 summary(Y2Full)
+cat('*******************************','\n\n\n')
 Z01=dat2[1,]
 pred1=predict(Y2Full,Z01)
 E=t(Y2Full$residuals)%*%Y2Full$residuals
@@ -115,27 +122,29 @@ temp=t(Z01)%*%c_prod%*%Z01
 temp=c(temp)
 alpha=0.05
 conf=sqrt(m*(n-r-1)*qf(1-alpha,m,n-r-m)/(n-r-m))
-print("Confidence Intervals for the Mean")
-print(paste(z0=Z01))
+cat('*******************************','\n\n\n')
+cat("Confidence Intervals for the Mean\n")
+cat('z0=',Z01,'\n')
 for (i in 1:m){
     Lower=pred1[i]-conf*sqrt(temp*E[i,i]/(n-r-1))
     Upper=pred1[i]+conf*sqrt(temp*E[i,i]/(n-r-1))
-    print(paste("Response variable",colnames(pred1)[i]))
-    print(c(Lower,Upper))
+    cat("Response variable",colnames(pred1)[i],'\n')
+    cat(Lower,Upper,'\n')
 }
-print("Prediction Intervals for a new observation")
+cat('*******************************','\n\n\n')
+cat("Prediction Intervals for a new observation\n")
 for (i in 1:m){
     Lower=pred1[i]-conf*sqrt((1+temp)*E[i,i]/(n-r-1))
     Upper=pred1[i]+conf*sqrt((1+temp)*E[i,i]/(n-r-1))
-    print(paste("Response variable",colnames(pred1)[i]))
-    print(c(Lower,Upper))
+    cat("Response variable",colnames(pred1)[i],'\n')
+    cat(Lower,Upper,'\n')
 }
-
+cat('*******************************','\n\n\n')
 
 
 #Do a box cox transformation to see what to do? log1p??????
 pt2=powerTransform(Y2Full)
-pt2
+print(pt2)
 Y2Trans=bcPower(Y2,lambda=pt2$lambda)
 colnames(Y2Trans)=colnames(Y2)
 datT2=data.frame(Y2Trans,X2)
@@ -145,7 +154,7 @@ Y2TransFull=lm(cbind(Online_Shopping_Spending,Grocery_Spending,Fuel_Spending,
   -Travel_Spending-Entertainment_Spending-Utility_Bill_Spending,data=datT2
 )
 summary(Y2TransFull)
-
+cat('*******************************','\n\n\n')
 Z01=datT2[1,]
 pred1=predict(Y2TransFull,Z01)
 E=t(Y2TransFull$residuals)%*%Y2TransFull$residuals
@@ -159,24 +168,37 @@ temp=t(Z01)%*%c_prod%*%Z01
 temp=c(temp)
 alpha=0.05
 conf=sqrt(m*(n-r-1)*qf(1-alpha,m,n-r-m)/(n-r-m))
-print("Confidence Intervals for the Mean")
-print(paste(z0=Z01))
+cat('*******************************','\n\n\n')
+cat("Confidence Intervals for the Mean\n")
+cat('z0=',Z01,'\n')
 for (i in 1:m){
     Lower=pred1[i]-conf*sqrt(temp*E[i,i]/(n-r-1))
     Upper=pred1[i]+conf*sqrt(temp*E[i,i]/(n-r-1))
-    print(paste("Response variable",colnames(pred1)[i]))
-    print(c(Lower,Upper))
+    cat("Response variable",colnames(pred1)[i],'\n')
+    cat(Lower,Upper,'\n')
 }
-print("Prediction Intervals for a new observation")
+cat("Prediction Intervals for a new observation\n")
 for (i in 1:m){
     Lower=pred1[i]-conf*sqrt((1+temp)*E[i,i]/(n-r-1))
     Upper=pred1[i]+conf*sqrt((1+temp)*E[i,i]/(n-r-1))
-    print(paste("Response variable",colnames(pred1)[i]))
-    print(c(Lower,Upper))
+    cat("Response variable",colnames(pred1)[i],'\n')
+    cat(Lower,Upper,'\n')
 }
+cat('*******************************','\n\n\n')
 sink()
 
 
 
 
 detach(credit_data)
+
+
+
+
+
+
+
+
+
+
+
