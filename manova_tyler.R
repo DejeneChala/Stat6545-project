@@ -370,3 +370,46 @@ for (w in 1:2){
   }
 }
 sink()
+
+
+#Boxplots for MANOVA for a visual. 
+library(ggplot2)
+library(tidyr)
+library(dplyr)
+
+# Long format: one row per observation per numeric variable
+log_card_long=log_sub_card_kept%>%
+pivot_longer(cols=all_of(NumVars),
+names_to="Variable",
+values_to="Value")
+
+
+log_card_long$Variable=factor(log_card_long$Variable,levels=NumVars)
+
+# Plot 1: Gender
+p_gender=ggplot(log_card_long,aes(x=Gender,y=Value,fill=Gender))+
+geom_boxplot()+
+stat_summary(fun=mean,geom="point",shape=4,size=2)+# mean marked with an X
+facet_wrap(~Variable,scales="free_y")+
+labs(title="Numeric Variables (log1p) by Gender",y="log1p(Value)")
+
+# Plot 2: Occupation
+p_occupation=ggplot(log_card_long,aes(x=Occupation,y=Value,fill=Occupation))+
+geom_boxplot()+
+stat_summary(fun=mean,geom="point",shape=4,size=2)+
+facet_wrap(~Variable,scales="free_y")+
+labs(title="Numeric Variables (log1p) by Occupation",y="log1p(Value)")
+
+# Plot 3: Card_Type
+p_cardtype=ggplot(log_card_long,aes(x=Card_Type,y=Value,fill=Card_Type))+
+geom_boxplot()+
+stat_summary(fun=mean,geom="point",shape=4,size=2)+
+facet_wrap(~Variable,scales="free_y")+
+labs(title="Numeric Variables (log1p) by Card Type",y="log1p(Value)")
+
+p_gender
+p_occupation
+p_cardtype
+ggsave("Boxplot_Gender.png",plot=p_gender,width=12,height=8,dpi=300)
+ggsave("Boxplot_Occupation.png",plot=p_occupation,width=12,height=8,dpi=300)
+ggsave("Boxplot_CardType.png",plot=p_cardtype,width=12,height=8,dpi=300)
