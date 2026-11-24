@@ -3,6 +3,7 @@
 ############################################################
 setwd(r"(C:\Users\tjgfx9\OneDrive - University of Missouri\Masters\Stat6545-project)") #Adjust your working directory as needed.
 credit_data <- read.csv("synthetic_credit_card_customer_behavior_dataset.csv")
+library(biotools)
 Split.Cov=function(df,column,vars){
   #Separate the Data Frame into separate groups
   #Calculate covariance matrices for separate groups
@@ -151,6 +152,10 @@ for (i in 1:length(CatVars)){
 }
 sink()
 
+
+boxM(data=log_sub_card_kept[,1:8],grouping=log_sub_card_kept$Gender)
+boxM(data=log_sub_card_kept[,1:8],grouping=log_sub_card_kept$Occupation)
+boxM(data=log_sub_card_kept[,1:8],grouping=log_sub_card_kept$Card_Type)
 
 #One Way MANOVA (and ANOVA)for each categorical variable.
 sink('OneWayMANOVAResults.txt',split=TRUE)
