@@ -1,0 +1,420 @@
+############################################################
+#MANOVA
+############################################################
+setwd(r"(C:\Users\tjgfx9\OneDrive - University of Missouri\Masters\Stat6545-project)") #Adjust your working directory as needed.
+credit_data <- read.csv("synthetic_credit_card_customer_behavior_dataset.csv")
+library(biotools)
+Split.Cov=function(df,column,vars){
+  #Separate the Data Frame into separate groups
+  #Calculate covariance matrices for separate groups
+  #Calculate Spool for all
+  groups=unique(df[[column]])
+  total=dim(df)[1]
+  g=length(groups)
+  group_data=vector("list",g)
+  group_cov=vector("list",g)
+  ns=vector('list',g)
+  for (i in 1:g){
+    group_data[[i]]=df %>%                    #Keep only Numeric
+      filter(.data[[column]]==groups[i]) %>%
+      select(all_of(vars)) %>%
+      as.matrix
+    group_cov[[i]]=cov(group_data[[i]])
+    ns[[i]]=nrow(group_data[[i]])
+  }
+  p=dim(group_data[[1]])[2]
+  Single_Spool=matrix(0,ncol=p,nrow=p)
+  n=0
+  for (j in 1:g){
+    Single_Spool=Single_Spool+(ns[[j]]-1)*group_cov[[j]]
+    n=n+ns[[j]]
+  }
+  Single_Spool=(1/(n-g))*Single_Spool
+  names(group_data)=as.character(groups)
+  names(group_cov)=as.character(groups)
+  return(list(X=group_data,Cov=group_cov,Spool=Single_Spool,Ns=ns,total=n))
+}
+
+BoxM.Test=function(Cov,Spool,Ns){
+  #Performs Box's M Test to Test H0 = Sig1=Sig2=....
+  #Ha = Otherwise.
+  #Returns a p-value. 
+  #Could have used the biotools package, but I wanted to do it from scratch so that
+  #I could also get the covariance matrices and Spool for later use in Bonferroni CI's.
+  p=dim(Cov[[1]])[1]
+  g=length(Cov)
+  lambda=1
+  ls=0
+  rsDenom=0
+  DetSpool=det(Spool)
+  for (i in 1:g){
+    holder=(det(Cov[[i]])/DetSpool)**((Ns[[i]]-1)/2)
+    lambda=lambda*holder
+    ls=ls+1/(Ns[[i]]-1)
+    rsDenom=rsDenom+(Ns[[i]]-1)
+  }
+  M=-2*log(lambda)
+  frac=(2*(p**2)+3*p-1)/(6*(p+1)*(g-1))
+  rs=1/rsDenom
+  u=(ls-rs)*frac
+  C=(1-u)*M
+  df=p*((p+1)*(g-1)/2)
+  pval=pchisq(C,df,lower.tail = F)
+  return(pval)
+}
+
+
+#Reset the output directory to prevent clogging up the GitHub repository with large output files.
+setwd(r"(C:\Users\tjgfx9\OneDrive - University of Missouri\Masters\Stat 6545\Project\Results)")
+
+
+
+#Set Up for MANOVA
+#Keep only these variables for MANOVA.
+card_kept=
+  subset(credit_data,select=c(Age,Gender,Occupation,Card_Type,Annual_Income,
+                    Credit_Limit,Monthly_Spending,Outstanding_Balance,
+                    Payment_Amount,Credit_Score,Card_Age_Months)
+)
+CatVars=c('Gender','Occupation','Card_Type')
+NumVars=c('Age','Annual_Income','Credit_Limit','Card_Age_Months','Monthly_Spending',
+          'Outstanding_Balance','Payment_Amount','Credit_Score'
+)
+set.seed(42)
+Chosen=sample(1:nrow(card_kept),1000)    #Start with a random sample of 1000 rows
+card_kept_chosen=card_kept[Chosen,]    #Here is Chosen Line
+#Keep only the numeric and categorical variables in separate matrices.
+card_kept_chosen_nums=(card_kept_chosen %>%
+  select(all_of(NumVars)) %>%
+  as.matrix
+)
+card_kept_chosen_cats=(card_kept_chosen %>%
+  select(all_of(CatVars)) %>%
+  as.data.frame
+)
+#Log transform the numeric variables to reduce skewness. (Dejene confirmed)
+card_kept_chosen_nums=log1p(card_kept_chosen_nums)   
+card_kept_chosen_nums=as.data.frame(card_kept_chosen_nums)
+log_sub_card_kept=cbind(card_kept_chosen_nums,card_kept_chosen_cats)
+
+
+
+#Do Box's M Test on a subset to see if the covariance matrices are equal across groups for each categorical variable.
+sink('BoxMResultsSmall.txt',split=TRUE)
+cat('This is a BoxM Test on a randomly selected sample of',length(Chosen),'rows from the original data set.')
+for (i in 1:length(CatVars)){
+  credit_test=Split.Cov(log_sub_card_kept,CatVars[i],NumVars)
+  Cov=credit_test$Cov
+  Spool=credit_test$Spool
+  Ns=credit_test$Ns
+  pval=BoxM.Test(Cov,Spool,Ns)
+  cat('\n\n')
+  cat('Box M Test for:',CatVars[i])
+  cat('\n','p-value =',pval)
+  cat('\n\n\n\n\n')
+}
+sink()
+
+
+
+
+#Now the BoxM for the full data set. This is done second as we need the full data set for below.
+card_kept_chosen=card_kept
+#Keep only the numeric and categorical variables in separate matrices.
+card_kept_chosen_nums=(card_kept_chosen %>%
+  select(all_of(NumVars)) %>%
+  as.matrix
+)
+card_kept_chosen_cats=(card_kept_chosen %>%
+  select(all_of(CatVars)) %>%
+  as.data.frame
+)
+#Log transform the numeric variables to reduce skewness. (Dejene confirmed)
+card_kept_chosen_nums=log1p(card_kept_chosen_nums)   
+card_kept_chosen_nums=as.data.frame(card_kept_chosen_nums)
+log_sub_card_kept=cbind(card_kept_chosen_nums,card_kept_chosen_cats)
+
+
+
+#Do Box's M Test to see if the covariance matrices are equal across groups for each categorical variable.
+sink('BoxMResultsBig.txt',split=TRUE)
+cat('This is a BoxM Test for the entire data set.')
+for (i in 1:length(CatVars)){
+  credit_test=Split.Cov(log_sub_card_kept,CatVars[i],NumVars)
+  Cov=credit_test$Cov
+  Spool=credit_test$Spool
+  Ns=credit_test$Ns
+  pval=BoxM.Test(Cov,Spool,Ns)
+  cat('\n\n')
+  cat('Box M Test for:',CatVars[i])
+  cat('\n','p-value =',pval)
+  cat('\n\n\n\n\n')
+}
+sink()
+
+
+boxM(data=log_sub_card_kept[,1:8],grouping=log_sub_card_kept$Gender)
+boxM(data=log_sub_card_kept[,1:8],grouping=log_sub_card_kept$Occupation)
+boxM(data=log_sub_card_kept[,1:8],grouping=log_sub_card_kept$Card_Type)
+
+#One Way MANOVA (and ANOVA)for each categorical variable.
+sink('OneWayMANOVAResults.txt',split=TRUE)
+for (i in 1:length(CatVars)){
+  cat('MANOVA Results for:',CatVars[i])
+  cat('\n\n')
+  manova_formula=as.formula(paste('cbind(',paste(NumVars,collapse=','),')~',CatVars[i]))
+  manova_model=manova(manova_formula,data=log_sub_card_kept)
+  cat('\n')
+  print(summary(manova_model,test='Wilks'))
+  print(summary(manova_model,test='Hotelling-Lawley'))
+  print(summary(manova_model,test='Roy'))
+  print(summary(manova_model,test='Pillai'))
+  cat('ANOVA Results for:',CatVars[i])
+  cat('\n')
+  for (j in 1:length(NumVars)){
+    anova_formula=as.formula(paste(NumVars[j],'~',CatVars[i]))
+    anova_model=aov(anova_formula,data=log_sub_card_kept)
+    cat('ANOVA Results for:',NumVars[j])
+    cat('\n')
+    print(summary(anova_model))
+  }
+  cat('********************************************************')
+  cat('\n\n\n\n\n')
+}
+sink()
+
+sink('OneWayCIResults.txt',split=TRUE)
+#One Way Bonferroni CI's
+p=length(NumVars)
+alpha=0.05
+for (l in 1:length(CatVars)){
+  SplitIt=Split.Cov(log_sub_card_kept,CatVars[l],NumVars)
+  Spool=SplitIt$Spool
+  Ns=SplitIt$Ns
+  n=SplitIt$total
+  g=length(unique(log_sub_card_kept[[CatVars[l]]]))
+  df=(n)-g
+  m=p*g*(g-1)/2
+  tcrit=qt(1-alpha/(2*m),df)
+  X=SplitIt$X
+  stopifnot(identical(colnames(X[[1]]),NumVars))
+  xmean=list()
+  for (i in 1:g){
+    xmean[[i]]=colMeans(X[[i]])
+  }
+  for (i in 1:p){
+    for (j in 1:(g-1)){
+      for (k in (j+1):g){
+        Lower=(xmean[[j]][i]-xmean[[k]][i]-tcrit*sqrt(((1/Ns[[j]])+(1/Ns[[k]]))*Spool[i,i]))
+        Upper=(xmean[[j]][i]-xmean[[k]][i]+tcrit*sqrt(((1/Ns[[j]])+(1/Ns[[k]]))*Spool[i,i]))
+        if(Lower*Upper>0){
+        cat('Response',NumVars[i],'| Compare',CatVars[l],':',names(X)[j],'-',names(X)[k],'\n')
+        cat('Lower =',Lower,'Upper =',Upper)
+        cat('\n****************************')
+        cat('\n\n\n\n\n')
+        }
+      }
+    }
+  }
+}
+
+
+
+#One Way CI's
+p=length(NumVars)
+alpha=0.05
+for (l in 1:length(CatVars)){
+  SplitIt=Split.Cov(log_sub_card_kept,CatVars[l],NumVars)
+  Spool=SplitIt$Spool
+  Ns=SplitIt$Ns
+  n=SplitIt$total
+  g=length(unique(log_sub_card_kept[[CatVars[l]]]))
+  df=(n)-g
+  tcrit=qt(1-alpha/2,df)
+  X=SplitIt$X
+  stopifnot(identical(colnames(X[[1]]),NumVars))
+  xmean=list()
+  for (i in 1:g){
+    xmean[[i]]=colMeans(X[[i]])
+  }
+  for (i in 1:p){
+    for (j in 1:(g-1)){
+      for (k in (j+1):g){
+        Lower=(xmean[[j]][i]-xmean[[k]][i]-tcrit*sqrt(((1/Ns[[j]])+(1/Ns[[k]]))*Spool[i,i]))
+        Upper=(xmean[[j]][i]-xmean[[k]][i]+tcrit*sqrt(((1/Ns[[j]])+(1/Ns[[k]]))*Spool[i,i]))
+        if(Lower*Upper>0){
+        cat('Response',NumVars[i],'| Compare',CatVars[l],':',names(X)[j],'-',names(X)[k],'\n')
+        cat('Lower =',Lower,'Upper =',Upper)
+        cat('\n****************************')
+        cat('\n\n\n\n\n')
+        }
+      }
+    }
+  }
+}
+sink()
+
+sink('TwoWayMANOVAResults.txt',split=TRUE)
+#Two Way MANOVA (and ANOVA) for each pair of categorical variables.
+for (i in 1:(length(CatVars)-1)){
+  for (j in (i+1):length(CatVars)){
+    cat('MANOVA Results for:',CatVars[i],'and',CatVars[j])
+    cat('\n\n')
+    manova_formula=as.formula(paste('cbind(',paste(NumVars,collapse=','),')~',CatVars[i],'*',CatVars[j]))
+    manova_model=manova(manova_formula,data=log_sub_card_kept)
+    cat('\n')
+    print(summary(manova_model,test='Wilks'))
+    print(summary(manova_model,test='Hotelling-Lawley'))
+    print(summary(manova_model,test='Roy'))
+    print(summary(manova_model,test='Pillai'))
+    cat('ANOVA Results for:',CatVars[i],'and',CatVars[j])
+    cat('\n')
+    for (k in 1:length(NumVars)){
+      anova_formula=as.formula(paste(NumVars[k],'~',CatVars[i],'*',CatVars[j]))
+      anova_model=aov(anova_formula,data=log_sub_card_kept)
+      cat('ANOVA Results for:',NumVars[k])
+      cat('\n')
+      print(summary(anova_model))
+    }
+    cat('********************************************************')
+    cat('\n\n\n\n\n')
+  }
+}
+sink()
+
+#In Post, add in Bonferroni CI's and CI's for two way MANOVA.
+#Two Way CI's (Bonferroni and Unadjusted) for main effects of each pair of categorical variables.
+p=length(NumVars)
+alpha=0.05
+sink('TwoWayCI.txt',split=TRUE)
+for (w in 1:2){
+  if (w==1){cat('BONFERRONI CI\'S\n\n')}
+  if (w==2){cat('UNADJUSTED CI\'S\n\n')}
+  for (l in 1:(length(CatVars)-1)){
+    for (q in (l+1):length(CatVars)){
+      A=CatVars[l]
+      B=CatVars[q]
+      dat=log_sub_card_kept
+      dat$Cell=paste(dat[[A]],dat[[B]],sep='|')
+      SplitIt=Split.Cov(dat,'Cell',NumVars)
+      Spool=SplitIt$Spool
+      Ns=SplitIt$Ns
+      n=SplitIt$total
+      X=SplitIt$X
+      stopifnot(identical(colnames(X[[1]]),NumVars))
+      Alev=sort(unique(as.character(dat[[A]])))
+      Blev=sort(unique(as.character(dat[[B]])))
+      g=length(Alev)
+      b=length(Blev)
+      ncell=length(X)
+      if(ncell!=g*b){cat('Skipping',A,'and',B,': at least one cell is empty\n\n\n'); next}
+      df=n-ncell
+      m=p*(g*(g-1)/2+b*(b-1)/2)   #All pairwise comparisons for both factors.
+      if (w==1){tcrit=qt(1-alpha/(2*m),df)}
+      if (w==2){tcrit=qt(1-alpha/2,df)}
+      xmean=list()
+      Nvec=c()
+      for (i in 1:ncell){
+        xmean[[names(X)[i]]]=colMeans(X[[i]])
+        Nvec[names(X)[i]]=Ns[[i]]
+      }
+      #Marginal means (average of cell means) and variance weights for each level of A and of B.
+      MA=matrix(0,nrow=g,ncol=p)
+      VA=rep(0,g)
+      for (j in 1:g){
+        for (k in 1:b){
+          nm=paste(Alev[j],Blev[k],sep='|')
+          MA[j,]=MA[j,]+xmean[[nm]]/b
+          VA[j]=VA[j]+(1/Nvec[[nm]])/b^2
+        }
+      }
+      MB=matrix(0,nrow=b,ncol=p)
+      VB=rep(0,b)
+      for (k in 1:b){
+        for (j in 1:g){
+          nm=paste(Alev[j],Blev[k],sep='|')
+          MB[k,]=MB[k,]+xmean[[nm]]/g
+          VB[k]=VB[k]+(1/Nvec[[nm]])/g^2
+        }
+      }
+      #CI's for differences between levels of A.
+      for (i in 1:p){
+        for (j in 1:(g-1)){
+          for (k in (j+1):g){
+            Diff=MA[j,i]-MA[k,i]
+            Lower=Diff-tcrit*sqrt((VA[j]+VA[k])*Spool[i,i])
+            Upper=Diff+tcrit*sqrt((VA[j]+VA[k])*Spool[i,i])
+            if(Lower*Upper>0){
+              cat('Response',NumVars[i],'| Compare',A,'(adjusting for',B,'):',Alev[j],'-',Alev[k],'\n')
+              cat('Diff =',Diff,'Lower =',Lower,'Upper =',Upper)
+              cat('\n****************************')
+              cat('\n\n\n\n\n')
+            }
+          }
+        }
+      }
+
+      
+      #CI's for differences between levels of B.
+      for (i in 1:p){
+        for (j in 1:(b-1)){
+          for (k in (j+1):b){
+            Diff=MB[j,i]-MB[k,i]
+            Lower=Diff-tcrit*sqrt((VB[j]+VB[k])*Spool[i,i])
+            Upper=Diff+tcrit*sqrt((VB[j]+VB[k])*Spool[i,i])
+            if(Lower*Upper>0){
+              cat('Response',NumVars[i],'| Compare',B,'(adjusting for',A,'):',Blev[j],'-',Blev[k],'\n')
+              cat('Diff =',Diff,'Lower =',Lower,'Upper =',Upper)
+              cat('\n****************************')
+              cat('\n\n\n\n\n')
+            }
+          }
+        }
+      }
+    }
+  }
+}
+sink()
+
+
+#Boxplots for MANOVA for a visual. 
+library(ggplot2)
+library(tidyr)
+library(dplyr)
+
+# Long format: one row per observation per numeric variable
+log_card_long=log_sub_card_kept%>%
+pivot_longer(cols=all_of(NumVars),
+names_to="Variable",
+values_to="Value")
+
+
+log_card_long$Variable=factor(log_card_long$Variable,levels=NumVars)
+
+# Plot 1: Gender
+p_gender=ggplot(log_card_long,aes(x=Gender,y=Value,fill=Gender))+
+geom_boxplot()+
+stat_summary(fun=mean,geom="point",shape=4,size=2)+# mean marked with an X
+facet_wrap(~Variable,scales="free_y")+
+labs(title="Numeric Variables (log1p) by Gender",y="log1p(Value)")
+
+# Plot 2: Occupation
+p_occupation=ggplot(log_card_long,aes(x=Occupation,y=Value,fill=Occupation))+
+geom_boxplot()+
+stat_summary(fun=mean,geom="point",shape=4,size=2)+
+facet_wrap(~Variable,scales="free_y")+
+labs(title="Numeric Variables (log1p) by Occupation",y="log1p(Value)")
+
+# Plot 3: Card_Type
+p_cardtype=ggplot(log_card_long,aes(x=Card_Type,y=Value,fill=Card_Type))+
+geom_boxplot()+
+stat_summary(fun=mean,geom="point",shape=4,size=2)+
+facet_wrap(~Variable,scales="free_y")+
+labs(title="Numeric Variables (log1p) by Card Type",y="log1p(Value)")
+
+p_gender
+p_occupation
+p_cardtype
+ggsave("Boxplot_Gender.png",plot=p_gender,width=12,height=8,dpi=300)
+ggsave("Boxplot_Occupation.png",plot=p_occupation,width=12,height=8,dpi=300)
+ggsave("Boxplot_CardType.png",plot=p_cardtype,width=12,height=8,dpi=300)
